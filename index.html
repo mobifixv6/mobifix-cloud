@@ -8,46 +8,538 @@
 <script src="https://accounts.google.com/gsi/client"></script>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
+
 :root {
-  --teal: #0d9488; --teal-dark: #0f766e; --teal-deeper: #134e4a; --teal-light: #f0fdfa; --teal-mid: #ccfbf1;
-  --gold: #f59e0b; --gold-light: #fffbeb; --red: #ef4444; --red-light: #fef2f2; --green: #22c55e;
-  --green-light: #f0fdf4; --slate: #0f172a; --slate-mid: #1e293b; --slate-light: #f8fafc; --border: #e2e8f0; --text: #334155; --text-light: #64748b;
+  --teal: #0d9488;
+  --teal-dark: #0f766e;
+  --teal-deeper: #134e4a;
+  --teal-light: #f0fdfa;
+  --teal-mid: #ccfbf1;
+  --gold: #f59e0b;
+  --gold-light: #fffbeb;
+  --red: #ef4444;
+  --red-light: #fef2f2;
+  --green: #22c55e;
+  --green-light: #f0fdf4;
+  --slate: #0f172a;
+  --slate-mid: #1e293b;
+  --slate-light: #f8fafc;
+  --border: #e2e8f0;
+  --text: #334155;
+  --text-light: #64748b;
 }
-body { font-family: 'Tajawal', sans-serif; background: #f1f5f9; color: var(--text); min-height: 100vh; padding-bottom: 60px; }
-.page-header { background: linear-gradient(135deg, var(--slate) 0%, var(--teal-deeper) 100%); padding: 50px 20px 40px; text-align: center; position: relative; overflow: hidden; }
-.page-header::before { content: ''; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); }
-.page-header .badge { display: inline-block; background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.4); color: var(--gold); padding: 5px 18px; border-radius: 30px; font-size: 12px; font-weight: 900; margin-bottom: 18px; position: relative; }
-.page-header h1 { color: #fff; font-size: clamp(22px, 5vw, 32px); font-weight: 900; margin-bottom: 12px; position: relative; line-height: 1.3; }
-.page-header p { color: rgba(255,255,255,0.6); font-size: 14px; position: relative; }
-.mode-selector { max-width: 500px; margin: -25px auto 25px; background: white; padding: 8px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); display: flex; gap: 8px; position: relative; z-index: 10; }
-.mode-btn { flex: 1; border: none; background: transparent; padding: 14px; font-family: 'Tajawal', sans-serif; font-size: 15px; font-weight: 900; color: var(--text-light); cursor: pointer; border-radius: 12px; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+
+body {
+  font-family: 'Tajawal', sans-serif;
+  background: #f1f5f9;
+  color: var(--text);
+  min-height: 100vh;
+  padding-bottom: 60px;
+}
+
+/* ===== HEADER ===== */
+.page-header {
+  background: linear-gradient(135deg, var(--slate) 0%, var(--teal-deeper) 100%);
+  padding: 50px 20px 40px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.page-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.page-header .badge {
+  display: inline-block;
+  background: rgba(245,158,11,0.15);
+  border: 1px solid rgba(245,158,11,0.4);
+  color: var(--gold);
+  padding: 5px 18px;
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  margin-bottom: 18px;
+  position: relative;
+}
+.page-header h1 {
+  color: #fff;
+  font-size: clamp(22px, 5vw, 32px);
+  font-weight: 900;
+  margin-bottom: 12px;
+  position: relative;
+  line-height: 1.3;
+}
+.page-header p {
+  color: rgba(255,255,255,0.6);
+  font-size: 14px;
+  position: relative;
+}
+
+/* ===== MODE SELECTOR ===== */
+.mode-selector {
+  max-width: 500px;
+  margin: -25px auto 25px;
+  background: white;
+  padding: 8px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  display: flex;
+  gap: 8px;
+  position: relative;
+  z-index: 10;
+}
+.mode-btn {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 14px;
+  font-family: 'Tajawal', sans-serif;
+  font-size: 15px;
+  font-weight: 900;
+  color: var(--text-light);
+  cursor: pointer;
+  border-radius: 12px;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
 .mode-btn.active { background: var(--teal); color: white; }
+
+/* ===== STEPS NAV ===== */
+.steps-nav {
+  background: white;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  overflow-x: auto;
+}
+.steps-nav-inner {
+  display: flex;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+.nav-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 20px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #94a3b8;
+  white-space: nowrap;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.nav-step.active { color: var(--teal-dark); border-bottom-color: var(--teal-dark); }
+.nav-step.done { color: var(--green); }
+.nav-step .num {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 900;
+  transition: all 0.2s;
+}
+.nav-step.active .num { background: var(--teal-dark); color: white; }
+.nav-step.done .num { background: var(--green); color: white; }
+
+/* ===== CONTAINER ===== */
 .container { max-width: 860px; margin: 0 auto; padding: 10px 15px; }
-.auto-box { background: white; border-radius: 24px; padding: 35px; box-shadow: 0 10px 30px rgba(0,0,0,0.06); border: 1px solid var(--border); text-align: center; }
+
+/* ===== AUTOMATIC BOX ===== */
+.auto-box {
+  background: white;
+  border-radius: 24px;
+  padding: 35px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+  border: 1px solid var(--border);
+  text-align: center;
+  margin-bottom: 25px;
+}
 .auto-box h2 { font-size: 22px; font-weight: 900; color: var(--slate); margin-bottom: 10px; }
 .auto-box p { font-size: 14px; color: var(--text-light); margin-bottom: 25px; line-height: 1.6; }
-.step-card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid var(--border); margin-bottom: 20px; display: block; }
-.step-card-header { background: linear-gradient(135deg, var(--teal-deeper), var(--teal-dark)); padding: 25px 30px; display: flex; align-items: center; gap: 18px; }
-.step-num-big { width: 52px; height: 52px; background: rgba(255,255,255,0.15); border: 2px solid rgba(255,255,255,0.3); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 900; color: white; flex-shrink: 0; }
+
+.google-btn-custom {
+  background: #4285f4;
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  font-size: 16px;
+  font-weight: 900;
+  border-radius: 30px;
+  font-family: 'Tajawal', sans-serif;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(66,133,244,0.3);
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.3s;
+}
+.google-btn-custom:hover { background: #357ae8; }
+
+.loading-status {
+  display: none;
+  margin: 20px 0;
+  padding: 15px;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--teal-dark);
+}
+
+/* ===== STEP CARD ===== */
+.step-card {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  border: 1px solid var(--border);
+  margin-bottom: 20px;
+  display: none;
+}
+.step-card.active { display: block; animation: slideIn 0.3s ease; }
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.step-card-header {
+  background: linear-gradient(135deg, var(--teal-deeper), var(--teal-dark));
+  padding: 25px 30px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.step-num-big {
+  width: 52px; height: 52px;
+  background: rgba(255,255,255,0.15);
+  border: 2px solid rgba(255,255,255,0.3);
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; font-weight: 900; color: white;
+  flex-shrink: 0;
+}
 .step-card-header h2 { color: white; font-size: 20px; font-weight: 900; margin-bottom: 4px; }
 .step-card-header p { color: rgba(255,255,255,0.7); font-size: 13px; }
+
 .step-card-body { padding: 30px; }
-.gen-form { background: linear-gradient(135deg, var(--teal-light), #ecfdf5); border: 2px solid var(--teal-mid); border-radius: 18px; padding: 28px; margin-top: 20px; }
+
+/* ===== INNER STEP ===== */
+.inner-step {
+  background: var(--slate-light);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px 24px;
+  margin-bottom: 16px;
+  text-align: right;
+}
+.inner-step-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 900;
+  font-size: 15px;
+  color: var(--slate);
+  margin-bottom: 12px;
+}
+.inner-step-title .icon {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: var(--teal-light);
+  color: var(--teal-dark);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+.inner-step p, .inner-step li {
+  font-size: 14px;
+  color: var(--text-light);
+  line-height: 1.9;
+}
+.inner-step ul { padding-right: 20px; }
+.inner-step li { margin-bottom: 4px; }
+
+/* ===== ALERTS ===== */
+.alert {
+  padding: 14px 18px;
+  border-radius: 12px;
+  margin: 16px 0;
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  line-height: 1.6;
+  text-align: right;
+}
+.alert-icon { font-size: 20px; flex-shrink: 0; }
+.alert-warn { background: var(--gold-light); border: 1.5px solid #fde68a; color: #78350f; }
+.alert-danger { background: var(--red-light); border: 1.5px solid #fca5a5; color: #991b1b; }
+.alert-success { background: var(--green-light); border: 1.5px solid #bbf7d0; color: #166534; }
+
+/* ===== PATH DISPLAY ===== */
+.path-display {
+  background: var(--slate-mid);
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin: 12px 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  direction: ltr;
+  justify-content: flex-start;
+}
+.path-item {
+  background: rgba(255,255,255,0.1);
+  color: #e2e8f0;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.path-arrow { color: #475569; font-size: 14px; }
+
+/* ===== CODE BLOCK ===== */
+.code-wrap { position: relative; margin: 16px 0; }
+.code-block {
+  background: #0f172a;
+  color: #e2e8f0;
+  padding: 24px 20px;
+  border-radius: 14px;
+  font-family: 'Courier New', monospace;
+  direction: ltr;
+  text-align: left;
+  overflow-x: auto;
+  font-size: 12.5px;
+  line-height: 1.8;
+  border: 1px solid #1e293b;
+}
+.code-block .c { color: #475569; }
+.code-block .k { color: #7dd3fc; }
+.code-block .s { color: #86efac; }
+.code-block .f { color: #fde68a; }
+.code-block .n { color: #f9a8d4; }
+
+.copy-btn {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: var(--teal-dark);
+  color: white;
+  border: none;
+  padding: 7px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 900;
+  font-family: 'Tajawal', sans-serif;
+  transition: all 0.2s;
+  display: flex; align-items: center; gap: 5px;
+}
+.copy-btn:hover { background: var(--teal-deeper); }
+.copy-btn.copied { background: #16a34a; }
+
+/* ===== FORM ===== */
+.gen-form {
+  background: linear-gradient(135deg, var(--teal-light), #ecfdf5);
+  border: 2px solid var(--teal-mid);
+  border-radius: 18px;
+  padding: 28px;
+  margin-top: 20px;
+}
+.gen-form h3 {
+  font-size: 16px; font-weight: 900;
+  color: var(--teal-deeper);
+  margin-bottom: 22px;
+  display: flex; align-items: center; gap: 8px;
+}
 .form-group { margin-bottom: 18px; text-align: right; }
-.form-group label { display: block; font-size: 13px; font-weight: 700; color: var(--slate); margin-bottom: 8px; }
-.form-group input { width: 100%; padding: 12px 16px; border: 2px solid var(--border); border-radius: 12px; font-size: 14px; font-family: 'Tajawal', sans-serif; background: white; color: var(--slate); }
-.form-group input:focus { outline: none; border-color: var(--teal); }
-.btn-generate { width: 100%; background: linear-gradient(135deg, var(--teal-dark), var(--teal-deeper)); color: white; border: none; padding: 18px; border-radius: 14px; font-size: 17px; font-weight: 900; font-family: 'Tajawal', sans-serif; cursor: pointer; transition: all 0.3s; margin-top: 8px; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 8px 20px rgba(15,118,110,0.3); }
-.loading-status { display: none; margin: 20px 0; padding: 15px; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0; font-size: 14px; font-weight: 700; color: var(--teal-dark); }
-.success-box { display: none; background: linear-gradient(135deg, #dcfce7, #d1fae5); border: 2px solid #86efac; border-radius: 16px; padding: 24px; margin-top: 18px; text-align: center; }
+.form-group label {
+  display: block;
+  font-size: 13px; font-weight: 700;
+  color: var(--slate);
+  margin-bottom: 8px;
+}
+.form-group input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  font-size: 14px;
+  font-family: 'Tajawal', sans-serif;
+  transition: all 0.2s;
+  background: white;
+  direction: ltr;
+  text-align: left;
+  color: var(--slate);
+}
+.form-group input:focus {
+  outline: none;
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(13,148,136,0.12);
+}
+.form-group input::placeholder { color: #94a3b8; }
+.form-hint { font-size: 11px; color: var(--text-light); margin-top: 5px; display: flex; align-items: center; gap: 4px; justify-content: flex-start; direction: rtl; }
+
+.btn-generate {
+  width: 100%;
+  background: linear-gradient(135deg, var(--teal-dark), var(--teal-deeper));
+  color: white;
+  border: none;
+  padding: 18px;
+  border-radius: 14px;
+  font-size: 18px; font-weight: 900;
+  font-family: 'Tajawal', sans-serif;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 8px;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  box-shadow: 0 8px 20px rgba(15,118,110,0.3);
+}
+.btn-generate:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(15,118,110,0.4); }
+
+/* ===== SUCCESS BOX ===== */
+.success-box {
+  display: none;
+  background: linear-gradient(135deg, #dcfce7, #d1fae5);
+  border: 2px solid #86efac;
+  border-radius: 16px;
+  padding: 24px;
+  margin-top: 18px;
+  text-align: center;
+  animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
 .success-box.show { display: block; }
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
 .success-box h4 { color: #166534; font-size: 18px; font-weight: 900; margin-bottom: 8px; }
-.success-box .filename { display: inline-block; background: white; padding: 6px 14px; border-radius: 8px; font-family: monospace; font-size: 13px; font-weight: 700; color: var(--teal-dark); margin: 8px 0; border: 1px solid var(--teal-mid); }
-#toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: #16a34a; color: white; padding: 12px 24px; border-radius: 30px; font-weight: 900; font-size: 14px; z-index: 9999; transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+.success-box p { color: #166534; font-size: 13px; line-height: 1.8; }
+.success-box .filename {
+  display: inline-block;
+  background: white;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-family: monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--teal-dark);
+  margin: 8px 0;
+  border: 1px solid var(--teal-mid);
+}
+
+/* ===== NAV BUTTONS ===== */
+.nav-btns {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 2px dashed var(--border);
+}
+.btn-next {
+  flex: 1;
+  background: var(--teal-dark);
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 12px;
+  font-size: 15px; font-weight: 900;
+  font-family: 'Tajawal', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.btn-next:hover { background: var(--teal-deeper); transform: translateY(-1px); }
+.btn-prev {
+  background: white;
+  color: var(--text-light);
+  border: 2px solid var(--border);
+  padding: 14px 24px;
+  border-radius: 12px;
+  font-size: 14px; font-weight: 700;
+  font-family: 'Tajawal', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-prev:hover { border-color: var(--teal-dark); color: var(--teal-dark); }
+
+/* ===== FINAL STEPS ===== */
+.final-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 18px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  margin-bottom: 12px;
+  transition: all 0.2s;
+  text-align: right;
+}
+.final-step:hover { border-color: var(--teal-dark); background: var(--teal-light); }
+.final-step-icon {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  background: var(--teal-light);
+  color: var(--teal-dark);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; flex-shrink: 0;
+}
+.final-step h4 { font-size: 14px; font-weight: 900; color: var(--slate); margin-bottom: 4px; }
+.final-step p { font-size: 13px; color: var(--text-light); }
+
+/* ===== FOOTER BOX ===== */
+.footer-box {
+  background: var(--slate-mid);
+  border-radius: 18px;
+  padding: 28px;
+  margin-top: 24px;
+  text-align: center;
+  color: white;
+}
+.footer-box h3 { font-size: 17px; font-weight: 900; margin-bottom: 10px; }
+.footer-box p { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.8; }
+
+/* ===== TOAST ===== */
+#toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: #16a34a;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-weight: 900;
+  font-size: 14px;
+  z-index: 9999;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  font-family: 'Tajawal', sans-serif;
+}
 #toast.show { transform: translateX(-50%) translateY(0); }
 #toast.error { background: var(--red); }
-.google-btn-custom { background: #4285f4; color: white; border: none; padding: 14px 28px; font-size: 16px; font-weight: 900; border-radius: 30px; font-family: 'Tajawal', sans-serif; cursor: pointer; box-shadow: 0 4px 15px rgba(66,133,244,0.3); display: inline-flex; align-items: center; gap: 12px; transition: all 0.3s; }
-.google-btn-custom:hover { background: #357ae8; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+  .step-card-body { padding: 20px 16px; }
+  .step-card-header { padding: 20px 16px; }
+  .gen-form { padding: 20px 16px; }
+  .nav-step { padding: 12px 14px; font-size: 11px; }
+}
 </style>
 </head>
 <body>
@@ -55,7 +547,7 @@ body { font-family: 'Tajawal', sans-serif; background: #f1f5f9; color: var(--tex
 <div id="toast"></div>
 
 <div class="page-header">
-  <div class="badge">Mobifix Cloud System</div>
+  <div class="badge">📋 دليل رسمي — اتبع الخطوات بالترتيب</div>
   <h1>تفعيل المراقبة السحابية<br>Mobifix PRO ☁️</h1>
   <p>قم بتفعيل المزامنة الفورية لمركزك بضغطة زر واحدة</p>
 </div>
@@ -84,14 +576,301 @@ body { font-family: 'Tajawal', sans-serif; background: #f1f5f9; color: var(--tex
   </div>
 
   <div id="viewManual" style="display: none;">
-    <div class="auto-box" style="text-align: right;">
-      <h2 style="text-align: center; margin-bottom: 15px;">🛠️ الإعداد اليدوي المباشر</h2>
-      <p style="text-align: center; margin-bottom: 20px;">إذا كنت تمتلك بالفعل روابط ومفاتيح سوبابيز الخاصة بك، ضعها في النموذج بالأسفل مباشرة لتوليد الملف.</p>
+    <div class="steps-nav" style="position: relative; margin-bottom: 25px; border-radius: 12px;">
+      <div class="steps-nav-inner">
+        <div class="nav-step active" id="nav1" onclick="goTo(1)">
+          <div class="num">1</div> إنشاء الحساب
+        </div>
+        <div class="nav-step" id="nav2" onclick="goTo(2)">
+          <div class="num">2</div> برمجة قاعدة البيانات
+        </div>
+        <div class="nav-step" id="nav3" onclick="goTo(3)">
+          <div class="num">3</div> جلب المفاتيح
+        </div>
+        <div class="nav-step" id="nav4" onclick="goTo(4)">
+          <div class="num">4</div> صنع ملف التفعيل
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card active" id="step1">
+      <div class="step-card-header">
+        <div class="step-num-big">1</div>
+        <div>
+          <h2>إنشاء حساب في Supabase</h2>
+          <p>مجاني 100% — لا يحتاج بطاقة بنكية</p>
+        </div>
+      </div>
+      <div class="step-card-body">
+        <div class="inner-step">
+          <div class="inner-step-title">
+            <div class="icon">🌐</div>
+            افتح الموقع الرسمي
+          </div>
+          <p>من هاتفك أو جهازك، افتح متصفحك واذهب لهذا الرابط:</p>
+          <div class="path-display" style="margin-top:10px; justify-content:center;">
+            <span class="path-item" style="font-size:15px; font-family:monospace;">https://supabase.com</span>
+          </div>
+          <p style="margin-top:10px;">اضغط زر <strong>"Start your project"</strong> أو <strong>"Sign Up"</strong> الظاهر في الصفحة</p>
+        </div>
+
+        <div class="inner-step">
+          <div class="inner-step-title">
+            <div class="icon">📧</div>
+            التسجيل بالإيميل
+          </div>
+          <ul>
+            <li>اختر <strong>"Continue with Email"</strong></li>
+            <li>ادخل إيميلك وكلمة مرور قوية</li>
+            <li>افتح إيميلك وانقر رابط التأكيد في الرسالة الواصلة</li>
+            <li>بعد التأكيد ستجد نفسك في لوحة التحكم تلقائياً</li>
+          </ul>
+        </div>
+
+        <div class="inner-step">
+          <div class="inner-step-title">
+            <div class="icon">🆕</div>
+            إنشاء مشروع جديد
+          </div>
+          <ul>
+            <li>اضغط <strong>"New project"</strong></li>
+            <li>في خانة <strong>Name</strong>: اكتب أي اسم إنجليزي مثل <strong style="color:var(--teal-dark);">MyCenter</strong></li>
+            <li>في خانة <strong>Database Password</strong>: اكتب كلمة مرور <span style="color:var(--red);font-weight:900;">احفظها في مكان آمن</span></li>
+            <li>في خانة <strong>Region</strong>: اختر أي منطقة، يُفضَّل <strong>West EU (Ireland)</strong></li>
+            <li>اضغط <strong>"Create new project"</strong></li>
+            <li>انتظر دقيقة أو دقيقتين حتى تكتمل العملية</li>
+          </ul>
+        </div>
+
+        <div class="alert alert-warn">
+          <span class="alert-icon">⚠️</span>
+          <span>لا تغلق الصفحة أثناء إنشاء المشروع — انتظر حتى تختفي دوامة التحميل ويظهر لك الداشبورد الكامل</span>
+        </div>
+
+        <div class="nav-btns">
+          <button class="btn-next" onclick="nextStep(1)">التالي — برمجة قاعدة البيانات ←</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card" id="step2">
+      <div class="step-card-header">
+        <div class="step-num-big">2</div>
+        <div>
+          <h2>برمجة قاعدة البيانات</h2>
+          <p>نسخ ولصق فقط — لا تحتاج أي خبرة برمجية</p>
+        </div>
+      </div>
+      <div class="step-card-body">
+        <div class="alert alert-success">
+          <span class="alert-icon">✅</span>
+          <span>هذا الكود يُنشئ الجداول المطلوبة ويُفعّل نظام التنشيط التلقائي كل 5 أيام لمنع توقف السحابة</span>
+        </div>
+
+        <div class="inner-step">
+          <div class="inner-step-title">
+            <div class="icon">📍</div>
+            كيف تصل لـ SQL Editor؟
+          </div>
+          <p style="margin-bottom:10px;">من لوحة تحكم Supabase:</p>
+          <div class="path-display">
+            <span class="path-item">🏠 Dashboard</span>
+            <span class="path-arrow">←</span>
+            <span class="path-item">مشروعك</span>
+            <span class="path-arrow">←</span>
+            <span class="path-item">⚡ SQL Editor</span>
+            <span class="path-arrow">←</span>
+            <span class="path-item">➕ New query</span>
+          </div>
+          <p style="margin-top:10px; font-size:13px; color:var(--text-light);">في القائمة الجانبية اليسرى ابحث عن أيقونة تشبه &lt;/&gt; أو كلمة SQL</p>
+        </div>
+
+        <div class="inner-step">
+          <div class="inner-step-title">
+            <div class="icon">💻</div>
+            انسخ هذا الكود والصقه كاملاً
+          </div>
+          <p style="margin-bottom:12px; font-size:13px;">اضغط زر النسخ أدناه، ثم الصق في نافذة SQL Editor واضغط <strong>RUN</strong></p>
+
+          <div class="code-wrap">
+            <button class="copy-btn" onclick="copySQL(this)" id="sqlCopyBtn">📋 نسخ الكود</button>
+            <pre class="code-block" id="sqlCode"><span class="c">-- =============================================
+-- Mobifix PRO — إعداد قاعدة البيانات السحابية
+-- انسخ هذا الكود كاملاً والصقه في SQL Editor
+-- =============================================</span>
+
+<span class="c">-- 1. إنشاء جدول المزامنة الرئيسي</span>
+<span class="k">CREATE TABLE IF NOT EXISTS</span> <span class="n">sync_data</span> (
+  <span class="n">center_name</span>  <span class="k">TEXT PRIMARY KEY</span>,
+  <span class="n">devices</span>      <span class="k">JSONB NOT NULL DEFAULT</span> <span class="s">'[]'</span>,
+  <span class="n">employees</span>    <span class="k">JSONB NOT NULL DEFAULT</span> <span class="s">'[]'</span>,
+  <span class="n">attendance</span>   <span class="k">JSONB NOT NULL DEFAULT</span> <span class="s">'[]'</span>,
+  <span class="n">expenses</span>     <span class="k">JSONB NOT NULL DEFAULT</span> <span class="s">'[]'</span>,
+  <span class="n">settings</span>     <span class="k">JSONB NOT NULL DEFAULT</span> <span class="s">'{}'</span>,
+  <span class="n">last_updated</span> <span class="k">BIGINT NOT NULL DEFAULT</span> 0,
+  <span class="n">metadata</span>     <span class="k">JSONB DEFAULT</span> <span class="s">'{}'</span>
+);
+
+<span class="c">-- 2. تفعيل نظام الأمان (Row Level Security)</span>
+<span class="k">ALTER TABLE</span> <span class="n">sync_data</span> <span class="k">ENABLE ROW LEVEL SECURITY</span>;
+
+<span class="c">-- 3. السماح بالوصول العام للمنظومة</span>
+<span class="k">DROP POLICY IF EXISTS</span> <span class="s">"mobifix_public_access"</span> <span class="k">ON</span> <span class="n">sync_data</span>;
+<span class="k">CREATE POLICY</span> <span class="s">"mobifix_public_access"</span>
+  <span class="k">ON</span> <span class="n">sync_data</span>
+  <span class="k">FOR ALL</span>
+  <span class="k">USING</span> (<span class="k">true</span>)
+  <span class="k">WITH CHECK</span> (<span class="k">true</span>);
+
+<span class="c">-- 4. إنشاء دالة التنشيط التلقائي (تمنع توقف السحابة)</span>
+<span class="k">CREATE EXTENSION IF NOT EXISTS</span> <span class="n">pg_cron</span>;
+
+<span class="k">CREATE OR REPLACE FUNCTION</span> <span class="f">mobifix_keepalive</span>()
+<span class="k">RETURNS void</span>
+<span class="k">LANGUAGE plpgsql AS</span> $$
+<span class="k">DECLARE</span>
+  <span class="n">v_last_sync</span>    <span class="k">BIGINT</span>;
+  <span class="n">v_now_ms</span>       <span class="k">BIGINT</span>;
+  <span class="n">v_five_days_ms</span> <span class="k">BIGINT</span> := 432000000;
+<span class="k">BEGIN</span>
+  <span class="n">v_now_ms</span> := (extract(epoch <span class="k">FROM</span> now()) * 1000)::bigint;
+  
+  <span class="k">SELECT</span> <span class="k">COALESCE</span>(<span class="k">MAX</span>(<span class="n">last_updated</span>), 0)
+  <span class="k">INTO</span> <span class="n">v_last_sync</span>
+  <span class="k">FROM</span> <span class="n">sync_data</span>
+  <span class="k">WHERE</span> <span class="n">center_name</span> != <span class="s">'MOBIFIX_HEARTBEAT'</span>;
+
+  <span class="c">-- لو مر 5 أيام بدون أي نشاط → نكتب سجل heartbeat</span>
+  <span class="k">IF</span> (<span class="n">v_now_ms</span> - <span class="n">v_last_sync</span>) > <span class="n">v_five_days_ms</span> <span class="k">THEN</span>
+    <span class="k">INSERT INTO</span> <span class="n">sync_data</span> (<span class="n">center_name</span>, <span class="n">last_updated</span>, <span class="n">metadata</span>)
+    <span class="k">VALUES</span> (
+      <span class="s">'MOBIFIX_HEARTBEAT'</span>,
+      <span class="n">v_now_ms</span>,
+      <span class="f">jsonb_build_object</span>(
+        <span class="s">'source'</span>, <span class="s">'auto_keepalive'</span>,
+        <span class="s">'reason'</span>, <span class="s">'5_days_no_activity'</span>,
+        <span class="s">'triggered_at'</span>, <span class="f">to_char</span>(now(), <span class="s">'YYYY-MM-DD HH24:MI:SS'</span>)
+      )
+    )
+    <span class="k">ON CONFLICT</span> (<span class="n">center_name</span>) <span class="k">DO UPDATE SET</span>
+      <span class="n">last_updated</span> = <span class="k">EXCLUDED</span>.<span class="n">last_updated</span>,
+      <span class="n">metadata</span>     = <span class="k">EXCLUDED</span>.<span class="n">metadata</span>;
+  <span class="k">END IF</span>;
+<span class="k">END</span>;
+$$;
+
+<span class="c">-- 5. جدولة التنشيط يومياً الساعة 12 ظهراً</span>
+<span class="k">SELECT</span> cron.<span class="f">unschedule</span>(<span class="n">jobid</span>) <span class="k">FROM</span> cron.<span class="n">job</span> <span class="k">WHERE</span> <span class="n">jobname</span> = <span class="s">'mobifix-keepalive'</span>;
+<span class="k">SELECT</span> cron.<span class="f">schedule</span>(
+  <span class="s">'mobifix-keepalive'</span>,
+  <span class="s">'0 12 * * *'</span>,
+  <span class="s">$$SELECT mobifix_keepalive()$$</span>
+);
+
+<span class="c">-- ✅ اكتمل الإعداد بنجاح</span></pre>
+          </div>
+        </div>
+
+        <div class="inner-step">
+          <div class="inner-step-title">
+            <div class="icon">▶️</div>
+            تشغيل الكود
+          </div>
+          <ul>
+            <li>بعد لصق الكود، اضغط زر <strong>"Run"</strong> الأخضر في أسفل أو أعلى الصفحة</li>
+            <li>انتظر بضع ثوانٍ حتى تظهر النتيجة</li>
+            <li>لو ظهرت رسالة باللون الأخضر → <strong style="color:#16a34a;">نجح كل شيء ✅</strong></li>
+            <li>لو ظهر خطأ يذكر <strong>pg_cron</strong> فقط → لا تقلق، الجدول الرئيسي نجح وهو الأهم</li>
+          </ul>
+        </div>
+
+        <div class="alert alert-warn">
+          <span class="alert-icon">⚠️</span>
+          <span>لو ظهر خطأ باللون الأحمر لا يذكر pg_cron — أعد نسخ الكود ولصقه والتأكد إنه كامل بدون حذف أي سطر، ثم اضغط Run مرة أخرى</span>
+        </div>
+
+        <div class="nav-btns">
+          <button class="btn-prev" onclick="prevStep(2)">→ السابق</button>
+          <button class="btn-next" onclick="nextStep(2)">التالي — جلب المفاتيح ←</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card" id="step3">
+      <div class="step-card-header">
+        <div class="step-num-big">3</div>
+        <div>
+          <h2>الحصول على مفاتيح الربط</h2>
+          <p>رابط + مفتاح — كلاهما في نفس المكان</p>
+        </div>
+      </div>
+      <div class="step-card-body">
+        <div class="inner-step">
+          <div class="inner-step-title">
+            <div class="icon">🔍</div>
+            كيف تصل لصفحة المفاتيح؟
+          </div>
+          <p style="margin-bottom:10px;"><strong>الطريقة الأسرع:</strong></p>
+          <div class="path-display">
+            <span class="path-item">🔍 شريط البحث العلوي</span>
+            <span class="path-arrow">←</span>
+            <span class="path-item">اكتب: API</span>
+            <span class="path-arrow">←</span>
+            <span class="path-item">اختر: Project API keys</span>
+          </div>
+          <p style="margin-top:12px; font-size:13px; color:var(--text-light);">أو من القائمة الجانبية: <strong>Settings ⚙️</strong> ← <strong>API</strong></p>
+        </div>
+
+        <div class="inner-step">
+          <div class="inner-step-title">
+            <div class="icon">🔗</div>
+            أولاً — رابط المشروع (Project URL)
+          </div>
+          <ul>
+            <li>ابحث عن قسم <strong>"Project URL"</strong> في الصفحة</li>
+            <li>الرابط شكله هكذا:<br>
+              <span style="font-family:monospace; background:#f1f5f9; padding:4px 10px; border-radius:6px; font-size:13px; display:inline-block; margin-top:6px; direction:ltr;">https://abcdefghijkl.supabase.co</span>
+            </li>
+            <li>اضغط <strong>Copy</strong> بجانبه أو انسخه يدوياً كاملاً</li>
+          </ul>
+          <div class="alert alert-warn" style="margin-top:12px;">
+            <span class="alert-icon">⚠️</span>
+            <span>لا تأخذ الرابط من شريط عنوان المتصفح — خذه فقط من قسم "Project URL" في صفحة API</span>
+          </div>
+        </div>
+
+        <div class="inner-step">
+          <div class="inner-step-title">
+            <div class="icon">🔑</div>
+            ثانياً — مفتاح الوصول (API Key)
+          </div>
+          <ul>
+            <li>في نفس الصفحة، ابحث عن قسم <strong>"Project API keys"</strong></li>
+            <li>ستجد مفتاحين — نريد <strong style="color:var(--teal-dark);">anon</strong> و <strong style="color:var(--teal-dark);">public</strong> فقط</li>
+            <li>اضغط <strong>Copy</strong> بجانب المفتاح الذي يكتب عنده <strong>anon</strong> و <strong>public</strong></li>
+            <li>المفتاح طويل جداً ويبدأ بـ <span style="font-family:monospace; font-size:12px; direction:ltr;">eyJhbGci...</span></li>
+          </ul>
+          <div class="alert alert-danger" style="margin-top:12px;">
+            <span class="alert-icon">🚫</span>
+            <span>لا تأخذ مفتاح <strong>service_role</strong> — هذا مفتاح سري وخطير. خذ فقط <strong>anon / public</strong></span>
+          </div>
+        </div>
+
+        <div class="alert alert-success">
+          <span class="alert-icon">✅</span>
+          <span>الآن عندك: <strong>رابط المشروع</strong> + <strong>مفتاح anon</strong> — هذا كل ما تحتاجه للخطوة الأخيرة</span>
+        </div>
+
+        <div class="nav-btns">
+          <button class="btn-prev" onclick="prevStep(3)">→ السابق</button>
+          <button class="btn-next" onclick="nextStep(3)">التالي — صنع ملف التفعيل ←</button>
+        </div>
+      </div>
     </div>
   </div>
 
   <div id="sectionFormAndGenerate" style="display: block; margin-top: 25px;">
-    <div class="step-card" id="step4">
+    <div class="step-card" id="step4" style="display: block;">
       <div class="step-card-header">
         <div class="step-num-big">📋</div>
         <div>
@@ -101,25 +880,36 @@ body { font-family: 'Tajawal', sans-serif; background: #f1f5f9; color: var(--tex
       </div>
       <div class="step-card-body">
         <div class="gen-form">
+          <h3>📝 مراجعة وتعديل بيانات الملف</h3>
+          
           <div class="form-group">
             <label>🔗 رابط المشروع (Project URL)</label>
-            <input type="text" id="inp_url" placeholder="سيتم ملؤه تلقائياً أو اكتبه يدوياً" style="direction: ltr; text-align: left;">
+            <input type="text" id="inp_url" placeholder="سيتم ملؤه تلقائياً أو اكتبه يدوياً">
+            <div class="form-hint">⚡ من صفحة API ← قسم Project URL أو من البناء التلقائي</div>
           </div>
+          
           <div class="form-group">
             <label>🔑 مفتاح الوصول (anon public key)</label>
-            <input type="text" id="inp_key" placeholder="سيتم ملؤه تلقائياً أو اكتبه يدوياً" style="direction: ltr; text-align: left;">
+            <input type="text" id="inp_key" placeholder="سيتم ملؤه تلقائياً أو اكتبه يدوياً">
+            <div class="form-hint">⚡ مفتاح anon public الطويل جداً لحماية اتصالك</div>
           </div>
+          
           <div class="form-group">
             <label>🏪 اسم مركزك</label>
             <input type="text" id="inp_name" placeholder="مثال: مركز عزو للصيانة" style="direction: rtl; text-align: right;">
+            <div class="form-hint">⚡ سيُستخدم لتمييز ملفك داخل الهاتف والمنظومة</div>
           </div>
+          
           <div class="form-group">
             <label>🔒 كلمة سر السحابة المعينة لك</label>
-            <input type="text" id="inp_pass" placeholder="سيتم تعيين رمز أمان تلقائي" style="direction: ltr; text-align: left;">
+            <input type="text" id="inp_pass" placeholder="سيتم تعيين رمز أمان تلقائي أو اختره بنفسك">
+            <div class="form-hint">⚡ الرمز السري الخاص بك لتفويض الدخول والخروج من السيرفر</div>
           </div>
+          
           <button class="btn-generate" onclick="generateFile()">
             🚀 صنع وتحميل ملف التفعيل (.json)
           </button>
+          
           <div id="successBox" class="success-box">
             <div style="font-size:40px; margin-bottom:10px;">🎉</div>
             <h4>تم صنع وتحميل ملف التفعيل بنجاح حقيقي!</h4>
@@ -127,47 +917,151 @@ body { font-family: 'Tajawal', sans-serif; background: #f1f5f9; color: var(--tex
             <p>الآن افتح منظومة Mobifix ← الإعدادات السحابية<br>← اضغط "رفع ملف التفعيل" ← اختر الملف المحمّل</p>
           </div>
         </div>
+
+        <div style="margin-top:28px;">
+          <h3 style="font-size:16px; font-weight:900; color:var(--slate); margin-bottom:16px; text-align: right;">Analyse 📲 الخطوات النهائية في المنظومة</h3>
+
+          <div class="final-step">
+            <div class="final-step-icon">📱</div>
+            <div>
+              <h4>افتح تطبيق Mobifix على جهازك</h4>
+              <p>تأكد من اتصالك بالإنترنت قبل المتابعة</p>
+            </div>
+          </div>
+
+          <div class="final-step">
+            <div class="final-step-icon">⚙️</div>
+            <div>
+              <h4>ادخل برمز المدير ← صفحة الإعدادات</h4>
+              <p>اضغط على تبويب الإعدادات في أسفل الشاشة</p>
+            </div>
+          </div>
+
+          <div class="final-step">
+            <div class="final-step-icon">☁️</div>
+            <div>
+              <h4>قسم الربط السحابي ← "تفعيل مراقبة المركز"</h4>
+              <p>اختر ملف التفعيل (.json) الذي قمت بتحميله للتو</p>
+            </div>
+          </div>
+
+          <div class="final-step">
+            <div class="final-step-icon">⏳</div>
+            <div>
+              <h4>انتظر 3 دقائق حتى يكتمل الربط</h4>
+              <p>لا تغلق التطبيق — ستظهر رسالة "تم التفعيل بنجاح" عند الاكتمال</p>
+            </div>
+          </div>
+
+          <div class="final-step" style="border-color:var(--teal-dark); background:var(--teal-light);">
+            <div class="final-step-icon" style="background:var(--teal-dark); color:white;">🎉</div>
+            <div>
+              <h4 style="color:var(--teal-deeper);">مبروك — مركزك متصل بالسحابة!</h4>
+              <p>يمكنك الآن مراقبة المركز من أي مكان في العالم</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+  </div>
+
+  <div class="footer-box">
+    <h3>🔒 بياناتك ملكك وحدك تماماً</h3>
+    <p>
+      أنت من أنشأ السيرفر بنفسك في Supabase — لا أحد يمتلك كلمة مرورك غيرك.<br>
+      حتى فريق Mobifix لا يستطيع الوصول لبيانات مركزك أبداً.
+    </p>
+    <p style="margin-top:12px; font-size:11px; color:rgba(255,255,255,0.3);">Mobifix PRO — الشريك التقني لنجاح مركز الصيانة</p>
   </div>
 
 </div>
 
 <script>
 var currentMode = 'auto';
+var currentStep = 1;
 var client;
 
 function showToast(msg, isError) {
   var t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = isError ? 'error' : '';
-  t.classList.add('show');
-  setTimeout(function() { t.classList.remove('show'); }, 3000);
+  if(t) {
+    t.textContent = msg;
+    t.className = isError ? 'error' : '';
+    t.classList.add('show');
+    setTimeout(function() { t.classList.remove('show'); }, 3000);
+  }
 }
 
 function switchMode(mode) {
   currentMode = mode;
-  document.getElementById('btnModeAuto').className = 'mode-btn' + (mode === 'auto' ? ' active' : '');
-  document.getElementById('btnModeManual').className = 'mode-btn' + (mode === 'manual' ? ' active' : '');
+  var btnAuto = document.getElementById('btnModeAuto');
+  var btnManual = document.getElementById('btnModeManual');
+  var viewAuto = document.getElementById('viewAutomatic');
+  var viewManual = document.getElementById('viewManual');
+
+  if(btnAuto) btnAuto.className = 'mode-btn' + (mode === 'auto' ? ' active' : '');
+  if(btnManual) btnManual.className = 'mode-btn' + (mode === 'manual' ? ' active' : '');
+  
   if (mode === 'auto') {
-    document.getElementById('viewAutomatic').style.display = 'block';
-    document.getElementById('viewManual').style.display = 'none';
+    if(viewAuto) viewAuto.style.display = 'block';
+    if(viewManual) viewManual.style.display = 'none';
   } else {
-    document.getElementById('viewAutomatic').style.display = 'none';
-    document.getElementById('viewManual').style.display = 'block';
+    if(viewAuto) viewAuto.style.display = 'none';
+    if(viewManual) viewManual.style.display = 'block';
+    goTo(1); // البدء بالخطوة الأولى تلقائياً عند الدخول للمود اليدوي
   }
 }
 
+function updateNav(step) {
+  for (var i = 1; i <= 4; i++) {
+    var nav = document.getElementById('nav' + i);
+    if(!nav) continue;
+    nav.className = 'nav-step';
+    if (i < step) nav.classList.add('done');
+    else if (i === step) nav.classList.add('active');
+    var num = nav.querySelector('.num');
+    if(num) {
+      if (i < step) num.textContent = '✓';
+      else num.textContent = i;
+    }
+  }
+}
+
+function goTo(step) {
+  if (step === 4) {
+    // خطوة 4 هي نموذج دائم موجود بالأسفل
+    updateNav(4);
+    window.scrollTo({ top: document.getElementById('sectionFormAndGenerate').offsetTop - 10, behavior: 'smooth' });
+    return;
+  }
+  
+  document.getElementById('step' + currentStep).classList.remove('active');
+  document.getElementById('step' + step).classList.add('active');
+  currentStep = step;
+  updateNav(step);
+  window.scrollTo({ top: document.querySelector('#viewManual .steps-nav').offsetTop - 10, behavior: 'smooth' });
+}
+
+function nextStep(from) { goTo(from + 1); }
+function prevStep(from) { goTo(from - 1); }
+
 window.onload = function () {
-  client = google.accounts.oauth2.initTokenClient({
-    client_id: '243311469446-1r7ui2cn94g7t67cr4ftlk4i9uipg147.apps.googleusercontent.com',
-    scope: 'https://www.googleapis.com/auth/userinfo.email profile',
-    callback: handleTokenResponse
-  });
+  try {
+    client = google.accounts.oauth2.initTokenClient({
+      client_id: '243311469446-1r7ui2cn94g7t67cr4ftlk4i9uipg147.apps.googleusercontent.com',
+      scope: 'https://www.googleapis.com/auth/userinfo.email profile',
+      callback: handleTokenResponse
+    });
+  } catch(e) {
+    console.log("Google library loading status: waiting.");
+  }
 };
 
 function loginWithGoogle() {
-  client.requestAccessToken();
+  if (client) {
+    client.requestAccessToken();
+  } else {
+    showToast('❌ جاري تحميل مكتبة تسجيل جوجل، انتظر ثانية وحاول مجدداً', true);
+  }
 }
 
 function handleTokenResponse(response) {
@@ -177,8 +1071,10 @@ function handleTokenResponse(response) {
   }
 
   var statusBox = document.getElementById('loadingStatus');
-  statusBox.style.display = 'block';
-  statusBox.textContent = '⏳ تم التفويض بنجاح! جاري جلب البريد وبناء سيرفرك في سوبابيز...';
+  if(statusBox) {
+    statusBox.style.display = 'block';
+    statusBox.textContent = '⏳ تم التفويض بنجاح! جاري جلب البريد وبناء سيرفرك المستقل في سوبابيز...';
+  }
 
   fetch('https://www.googleapis.com/oauth2/v3/userinfo?access_token=' + response.access_token)
   .then(function(res) { return res.json(); })
@@ -197,8 +1093,109 @@ function handleTokenResponse(response) {
   .then(function(data) {
     if (data.error) throw new Error(data.error);
 
-    document.getElementById('inp_url').value = data.url;
-    document.getElementById('inp_key').value = data.key;
-    document.getElementById('inp_pass').value = data.password;
+    document.getElementById('inp_url').value = data.url || '';
+    document.getElementById('inp_key').value = data.key || '';
+    document.getElementById('inp_pass').value = data.password || '';
     
-    statusBox.style.background = 'var(--green-light)';
+    if(statusBox) {
+      statusBox.style.background = 'var(--green-light)';
+      statusBox.style.color = 'var(--green)';
+      statusBox.textContent = '✅ نجح السحر البرمجي! تم بناء سيرفرك وزراعة الجداول بالكامل بنجاح حقيقي.';
+    }
+    showToast('🎉 اكتمل الإعداد التلقائي بنجاح!', false);
+    
+    // سحب العرض مباشرة للأسفل لرؤية الملف الجاهز للتحميل
+    window.scrollTo({ top: document.getElementById('sectionFormAndGenerate').offsetTop - 10, behavior: 'smooth' });
+  })
+  .catch(function(err) {
+    if(statusBox) {
+      statusBox.style.background = 'var(--red-light)';
+      statusBox.style.color = 'var(--red)';
+      statusBox.textContent = '❌ تعذر التفعيل التلقائي: ' + err.message;
+    }
+    showToast('❌ فشل الاتصال بالسيرفر السحابي', true);
+  });
+}
+
+function copySQL(btn) {
+  var code = document.getElementById('sqlCode');
+  var text = code.innerText || code.textContent;
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = '✅ تم النسخ!';
+      btn.classList.add('copied');
+      showToast('✅ تم نسخ الكود بنجاح!', false);
+      setTimeout(function() {
+        btn.textContent = '📋 نسخ الكود';
+        btn.classList.remove('copied');
+      }, 3000);
+    });
+  } else {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.cssText = 'position:fixed;left:-9999px;top:0;';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    btn.textContent = '✅ تم النسخ!';
+    showToast('✅ تم نسخ الكود بنجاح!', false);
+    setTimeout(function() { btn.textContent = '📋 نسخ الكود'; }, 3000);
+  }
+}
+
+function generateFile() {
+  var url  = document.getElementById('inp_url').value.trim();
+  var key  = document.getElementById('inp_key').value.trim();
+  var name = document.getElementById('inp_name').value.trim();
+  var pass = document.getElementById('inp_pass').value.trim();
+
+  if (!url || !key || !name || !pass) {
+    showToast('❌ يرجى ملء البيانات أو تسجيل الدخول بجوجل أولاً للتفعيل', true);
+    return;
+  }
+
+  // تنظيف الرابط
+  if (!url.startsWith('http')) url = 'https://' + url;
+  if (url.endsWith('/')) url = url.slice(0, -1);
+
+  var now = new Date();
+  var pad = function(n) { return n.toString().padStart(2, '0'); };
+  var dateStr = now.getFullYear().toString() + pad(now.getMonth()+1) + pad(now.getDate());
+  var timeStr = pad(now.getHours()) + pad(now.getMinutes());
+  
+  var namePart = name
+    .replace(/\s+/g, '')
+    .replace(/[^\u0600-\u06FFa-zA-Z0-9]/g, '')
+    .substring(0, 12);
+    
+  var syncId = namePart + '_' + dateStr + '_' + timeStr;
+
+  var config = {
+    cloudUrl: url,
+    cloudApiKey: key,
+    cloudSyncId: syncId,
+    cloudAccessCode: pass,
+    centerName: name,
+    generatedAt: now.toLocaleString('ar-LY'),
+    version: 'Mobifix_PRO_v4'
+  };
+
+  var blob = new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' });
+  var burl = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = burl;
+  var fname = 'مراقبة_' + namePart + '_' + dateStr + '.json';
+  a.download = fname;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(burl);
+
+  document.getElementById('fileNameDisplay').textContent = fname;
+  document.getElementById('successBox').classList.add('show');
+  showToast('🎉 تم تحميل ملف التفعيل بنجاح واكتملت المنظومة السحابية!', false);
+}
+</script>
+</body>
+</html>
