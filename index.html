@@ -196,6 +196,8 @@ body {
   font-size: 14px;
   font-weight: 700;
   color: var(--teal-dark);
+  text-align: right;
+  line-height: 1.6;
 }
 
 /* ===== STEP CARD ===== */
@@ -326,11 +328,6 @@ body {
   line-height: 1.8;
   border: 1px solid #1e293b;
 }
-.code-block .c { color: #475569; }
-.code-block .k { color: #7dd3fc; }
-.code-block .s { color: #86efac; }
-.code-block .f { color: #fde68a; }
-.code-block .n { color: #f9a8d4; }
 
 .copy-btn {
   position: absolute;
@@ -385,13 +382,6 @@ body {
   text-align: left;
   color: var(--slate);
 }
-.form-group input:focus {
-  outline: none;
-  border-color: var(--teal);
-  box-shadow: 0 0 0 3px rgba(13,148,136,0.12);
-}
-.form-group input::placeholder { color: #94a3b8; }
-.form-hint { font-size: 11px; color: var(--text-light); margin-top: 5px; display: flex; align-items: center; gap: 4px; justify-content: flex-start; direction: rtl; }
 
 .btn-generate {
   width: 100%;
@@ -408,40 +398,7 @@ body {
   display: flex; align-items: center; justify-content: center; gap: 10px;
   box-shadow: 0 8px 20px rgba(15,118,110,0.3);
 }
-.btn-generate:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(15,118,110,0.4); }
 
-/* ===== SUCCESS BOX ===== */
-.success-box {
-  display: none;
-  background: linear-gradient(135deg, #dcfce7, #d1fae5);
-  border: 2px solid #86efac;
-  border-radius: 16px;
-  padding: 24px;
-  margin-top: 18px;
-  text-align: center;
-  animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-.success-box.show { display: block; }
-@keyframes popIn {
-  from { opacity: 0; transform: scale(0.9); }
-  to { opacity: 1; transform: scale(1); }
-}
-.success-box h4 { color: #166534; font-size: 18px; font-weight: 900; margin-bottom: 8px; }
-.success-box p { color: #166534; font-size: 13px; line-height: 1.8; }
-.success-box .filename {
-  display: inline-block;
-  background: white;
-  padding: 6px 14px;
-  border-radius: 8px;
-  font-family: monospace;
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--teal-dark);
-  margin: 8px 0;
-  border: 1px solid var(--teal-mid);
-}
-
-/* ===== NAV BUTTONS ===== */
 .nav-btns {
   display: flex;
   gap: 12px;
@@ -462,7 +419,6 @@ body {
   transition: all 0.2s;
   display: flex; align-items: center; justify-content: center; gap: 8px;
 }
-.btn-next:hover { background: var(--teal-deeper); transform: translateY(-1px); }
 .btn-prev {
   background: white;
   color: var(--text-light);
@@ -474,32 +430,18 @@ body {
   cursor: pointer;
   transition: all 0.2s;
 }
-.btn-prev:hover { border-color: var(--teal-dark); color: var(--teal-dark); }
 
-/* ===== FINAL STEPS ===== */
-.final-step {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-  padding: 18px;
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  margin-bottom: 12px;
-  transition: all 0.2s;
-  text-align: right;
+/* ===== SUCCESS BOX ===== */
+.success-box {
+  display: none;
+  background: linear-gradient(135deg, #dcfce7, #d1fae5);
+  border: 2px solid #86efac;
+  border-radius: 16px;
+  padding: 24px;
+  margin-top: 18px;
+  text-align: center;
 }
-.final-step:hover { border-color: var(--teal-dark); background: var(--teal-light); }
-.final-step-icon {
-  width: 44px; height: 44px;
-  border-radius: 12px;
-  background: var(--teal-light);
-  color: var(--teal-dark);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 22px; flex-shrink: 0;
-}
-.final-step h4 { font-size: 14px; font-weight: 900; color: var(--slate); margin-bottom: 4px; }
-.final-step p { font-size: 13px; color: var(--text-light); }
+.success-box.show { display: block; }
 
 /* ===== FOOTER BOX ===== */
 .footer-box {
@@ -510,8 +452,6 @@ body {
   text-align: center;
   color: white;
 }
-.footer-box h3 { font-size: 17px; font-weight: 900; margin-bottom: 10px; }
-.footer-box p { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.8; }
 
 /* ===== TOAST ===== */
 #toast {
@@ -532,14 +472,6 @@ body {
 }
 #toast.show { transform: translateX(-50%) translateY(0); }
 #toast.error { background: var(--red); }
-
-/* ===== RESPONSIVE ===== */
-@media (max-width: 600px) {
-  .step-card-body { padding: 20px 16px; }
-  .step-card-header { padding: 20px 16px; }
-  .gen-form { padding: 20px 16px; }
-  .nav-step { padding: 12px 14px; font-size: 11px; }
-}
 </style>
 </head>
 <body>
@@ -566,7 +498,6 @@ body {
       
       <div style="margin: 20px 0;">
         <button class="google-btn-custom" onclick="loginWithGoogle()">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M21.35 11.1H12v2.7h5.38c-.23 1.28-1.03 2.37-2.11 3.1v2.58h3.42c2-1.84 3.16-4.54 3.16-7.68 0-.6-.05-1.18-.16-1.7z" fill="#fff"/><path d="M12 21c2.43 0 4.47-.8 5.96-2.22l-3.42-2.58c-.95.64-2.16 1.02-3.54 1.02-2.72 0-5.02-1.84-5.84-4.31H1.64v2.66C3.12 18.52 7.24 21 12 21z" fill="#fff"/><path d="M6.16 12.91c-.21-.64-.33-1.33-.33-2.04s.12-1.4.33-2.04V6.17H1.64C.6 8.25 0 10.56 0 13s.6 4.75 1.64 6.83l4.52-3.52-.14-.4z" fill="#fff"/><path d="M12 5.38c1.32 0 2.5.45 3.44 1.35l2.58-2.58C16.46 2.6c-1.99-1.1-4.47-1.1-5.96-1.1-4.76 0-8.88 2.48-10.36 6.17l4.52 3.52c.82-2.47 3.12-4.31 5.84-4.31z" fill="#fff"/></svg>
           تسجيل الدخول السريع عبر Google
         </button>
       </div>
@@ -578,18 +509,9 @@ body {
   <div id="viewManual" style="display: none;">
     <div class="steps-nav" style="position: relative; margin-bottom: 25px; border-radius: 12px;">
       <div class="steps-nav-inner">
-        <div class="nav-step active" id="nav1" onclick="goTo(1)">
-          <div class="num">1</div> إنشاء الحساب
-        </div>
-        <div class="nav-step" id="nav2" onclick="goTo(2)">
-          <div class="num">2</div> برمجة قاعدة البيانات
-        </div>
-        <div class="nav-step" id="nav3" onclick="goTo(3)">
-          <div class="num">3</div> جلب المفاتيح
-        </div>
-        <div class="nav-step" id="nav4" onclick="goTo(4)">
-          <div class="num">4</div> صنع ملف التفعيل
-        </div>
+        <div class="nav-step active" id="nav1" onclick="goTo(1)"><div class="num">1</div> إنشاء الحساب</div>
+        <div class="nav-step" id="nav2" onclick="goTo(2)"><div class="num">2</div> برمجة قاعدة البيانات</div>
+        <div class="nav-step" id="nav3" onclick="goTo(3)"><div class="num">3</div> جلب المفاتيح</div>
       </div>
     </div>
 
@@ -603,53 +525,14 @@ body {
       </div>
       <div class="step-card-body">
         <div class="inner-step">
-          <div class="inner-step-title">
-            <div class="icon">🌐</div>
-            افتح الموقع الرسمي
-          </div>
+          <div class="inner-step-title"><div class="icon">🌐</div>افتح الموقع الرسمي</div>
           <p>من هاتفك أو جهازك، افتح متصفحك واذهب لهذا الرابط:</p>
           <div class="path-display" style="margin-top:10px; justify-content:center;">
             <span class="path-item" style="font-size:15px; font-family:monospace;">https://supabase.com</span>
           </div>
-          <p style="margin-top:10px;">اضغط زر <strong>"Start your project"</strong> أو <strong>"Sign Up"</strong> الظاهر في الصفحة</p>
+          <p style="margin-top:10px;">اضغط زر <strong>"Start your project"</strong></p>
         </div>
-
-        <div class="inner-step">
-          <div class="inner-step-title">
-            <div class="icon">📧</div>
-            التسجيل بالإيميل
-          </div>
-          <ul>
-            <li>اختر <strong>"Continue with Email"</strong></li>
-            <li>ادخل إيميلك وكلمة مرور قوية</li>
-            <li>افتح إيميلك وانقر رابط التأكيد في الرسالة الواصلة</li>
-            <li>بعد التأكيد ستجد نفسك في لوحة التحكم تلقائياً</li>
-          </ul>
-        </div>
-
-        <div class="inner-step">
-          <div class="inner-step-title">
-            <div class="icon">🆕</div>
-            إنشاء مشروع جديد
-          </div>
-          <ul>
-            <li>اضغط <strong>"New project"</strong></li>
-            <li>في خانة <strong>Name</strong>: اكتب أي اسم إنجليزي مثل <strong style="color:var(--teal-dark);">MyCenter</strong></li>
-            <li>في خانة <strong>Database Password</strong>: اكتب كلمة مرور <span style="color:var(--red);font-weight:900;">احفظها في مكان آمن</span></li>
-            <li>في خانة <strong>Region</strong>: اختر أي منطقة، يُفضَّل <strong>West EU (Ireland)</strong></li>
-            <li>اضغط <strong>"Create new project"</strong></li>
-            <li>انتظر دقيقة أو دقيقتين حتى تكتمل العملية</li>
-          </ul>
-        </div>
-
-        <div class="alert alert-warn">
-          <span class="alert-icon">⚠️</span>
-          <span>لا تغلق الصفحة أثناء إنشاء المشروع — انتظر حتى تختفي دوامة التحميل ويظهر لك الداشبورد الكامل</span>
-        </div>
-
-        <div class="nav-btns">
-          <button class="btn-next" onclick="nextStep(1)">التالي — برمجة قاعدة البيانات ←</button>
-        </div>
+        <div class="nav-btns"><button class="btn-next" onclick="nextStep(1)">التالي ←</button></div>
       </div>
     </div>
 
@@ -658,140 +541,30 @@ body {
         <div class="step-num-big">2</div>
         <div>
           <h2>برمجة قاعدة البيانات</h2>
-          <p>نسخ ولصق فقط — لا تحتاج أي خبرة برمجية</p>
+          <p>نسخ ولصق الكود في الـ SQL Editor</p>
         </div>
       </div>
       <div class="step-card-body">
-        <div class="alert alert-success">
-          <span class="alert-icon">✅</span>
-          <span>هذا الكود يُنشئ الجداول المطلوبة ويُفعّل نظام التنشيط التلقائي كل 5 أيام لمنع توقف السحابة</span>
-        </div>
-
-        <div class="inner-step">
-          <div class="inner-step-title">
-            <div class="icon">📍</div>
-            كيف تصل لـ SQL Editor؟
-          </div>
-          <p style="margin-bottom:10px;">من لوحة تحكم Supabase:</p>
-          <div class="path-display">
-            <span class="path-item">🏠 Dashboard</span>
-            <span class="path-arrow">←</span>
-            <span class="path-item">مشروعك</span>
-            <span class="path-arrow">←</span>
-            <span class="path-item">⚡ SQL Editor</span>
-            <span class="path-arrow">←</span>
-            <span class="path-item">➕ New query</span>
-          </div>
-          <p style="margin-top:10px; font-size:13px; color:var(--text-light);">في القائمة الجانبية اليسرى ابحث عن أيقونة تشبه &lt;/&gt; أو كلمة SQL</p>
-        </div>
-
-        <div class="inner-step">
-          <div class="inner-step-title">
-            <div class="icon">💻</div>
-            انسخ هذا الكود والصقه كاملاً
-          </div>
-          <p style="margin-bottom:12px; font-size:13px;">اضغط زر النسخ أدناه، ثم الصق في نافذة SQL Editor واضغط <strong>RUN</strong></p>
-
-          <div class="code-wrap">
-            <button class="copy-btn" onclick="copySQL(this)" id="sqlCopyBtn">📋 نسخ الكود</button>
-            <pre class="code-block" id="sqlCode"><span class="c">-- =============================================
--- Mobifix PRO — إعداد قاعدة البيانات السحابية
--- انسخ هذا الكود كاملاً والصقه في SQL Editor
--- =============================================</span>
-
-<span class="c">-- 1. إنشاء جدول المزامنة الرئيسي</span>
-<span class="k">CREATE TABLE IF NOT EXISTS</span> <span class="n">sync_data</span> (
-  <span class="n">center_name</span>  <span class="k">TEXT PRIMARY KEY</span>,
-  <span class="n">devices</span>      <span class="k">JSONB NOT NULL DEFAULT</span> <span class="s">'[]'</span>,
-  <span class="n">employees</span>    <span class="k">JSONB NOT NULL DEFAULT</span> <span class="s">'[]'</span>,
-  <span class="n">attendance</span>   <span class="k">JSONB NOT NULL DEFAULT</span> <span class="s">'[]'</span>,
-  <span class="n">expenses</span>     <span class="k">JSONB NOT NULL DEFAULT</span> <span class="s">'[]'</span>,
-  <span class="n">settings</span>     <span class="k">JSONB NOT NULL DEFAULT</span> <span class="s">'{}'</span>,
-  <span class="n">last_updated</span> <span class="k">BIGINT NOT NULL DEFAULT</span> 0,
-  <span class="n">metadata</span>     <span class="k">JSONB DEFAULT</span> <span class="s">'{}'</span>
+        <div class="code-wrap">
+          <button class="copy-btn" onclick="copySQL(this)" id="sqlCopyBtn">📋 نسخ الكود</button>
+          <pre class="code-block" id="sqlCode">
+CREATE TABLE IF NOT EXISTS sync_data (
+  center_name TEXT PRIMARY KEY,
+  devices JSONB NOT NULL DEFAULT '[]',
+  employees JSONB NOT NULL DEFAULT '[]',
+  attendance JSONB NOT NULL DEFAULT '[]',
+  expenses JSONB NOT NULL DEFAULT '[]',
+  settings JSONB NOT NULL DEFAULT '{}',
+  last_updated BIGINT NOT NULL DEFAULT 0
 );
-
-<span class="c">-- 2. تفعيل نظام الأمان (Row Level Security)</span>
-<span class="k">ALTER TABLE</span> <span class="n">sync_data</span> <span class="k">ENABLE ROW LEVEL SECURITY</span>;
-
-<span class="c">-- 3. السماح بالوصول العام للمنظومة</span>
-<span class="k">DROP POLICY IF EXISTS</span> <span class="s">"mobifix_public_access"</span> <span class="k">ON</span> <span class="n">sync_data</span>;
-<span class="k">CREATE POLICY</span> <span class="s">"mobifix_public_access"</span>
-  <span class="k">ON</span> <span class="n">sync_data</span>
-  <span class="k">FOR ALL</span>
-  <span class="k">USING</span> (<span class="k">true</span>)
-  <span class="k">WITH CHECK</span> (<span class="k">true</span>);
-
-<span class="c">-- 4. إنشاء دالة التنشيط التلقائي (تمنع توقف السحابة)</span>
-<span class="k">CREATE EXTENSION IF NOT EXISTS</span> <span class="n">pg_cron</span>;
-
-<span class="k">CREATE OR REPLACE FUNCTION</span> <span class="f">mobifix_keepalive</span>()
-<span class="k">RETURNS void</span>
-<span class="k">LANGUAGE plpgsql AS</span> $$
-<span class="k">DECLARE</span>
-  <span class="n">v_last_sync</span>    <span class="k">BIGINT</span>;
-  <span class="n">v_now_ms</span>       <span class="k">BIGINT</span>;
-  <span class="n">v_five_days_ms</span> <span class="k">BIGINT</span> := 432000000;
-<span class="k">BEGIN</span>
-  <span class="n">v_now_ms</span> := (extract(epoch <span class="k">FROM</span> now()) * 1000)::bigint;
-  
-  <span class="k">SELECT</span> <span class="k">COALESCE</span>(<span class="k">MAX</span>(<span class="n">last_updated</span>), 0)
-  <span class="k">INTO</span> <span class="n">v_last_sync</span>
-  <span class="k">FROM</span> <span class="n">sync_data</span>
-  <span class="k">WHERE</span> <span class="n">center_name</span> != <span class="s">'MOBIFIX_HEARTBEAT'</span>;
-
-  <span class="c">-- لو مر 5 أيام بدون أي نشاط → نكتب سجل heartbeat</span>
-  <span class="k">IF</span> (<span class="n">v_now_ms</span> - <span class="n">v_last_sync</span>) > <span class="n">v_five_days_ms</span> <span class="k">THEN</span>
-    <span class="k">INSERT INTO</span> <span class="n">sync_data</span> (<span class="n">center_name</span>, <span class="n">last_updated</span>, <span class="n">metadata</span>)
-    <span class="k">VALUES</span> (
-      <span class="s">'MOBIFIX_HEARTBEAT'</span>,
-      <span class="n">v_now_ms</span>,
-      <span class="f">jsonb_build_object</span>(
-        <span class="s">'source'</span>, <span class="s">'auto_keepalive'</span>,
-        <span class="s">'reason'</span>, <span class="s">'5_days_no_activity'</span>,
-        <span class="s">'triggered_at'</span>, <span class="f">to_char</span>(now(), <span class="s">'YYYY-MM-DD HH24:MI:SS'</span>)
-      )
-    )
-    <span class="k">ON CONFLICT</span> (<span class="n">center_name</span>) <span class="k">DO UPDATE SET</span>
-      <span class="n">last_updated</span> = <span class="k">EXCLUDED</span>.<span class="n">last_updated</span>,
-      <span class="n">metadata</span>     = <span class="k">EXCLUDED</span>.<span class="n">metadata</span>;
-  <span class="k">END IF</span>;
-<span class="k">END</span>;
-$$;
-
-<span class="c">-- 5. جدولة التنشيط يومياً الساعة 12 ظهراً</span>
-<span class="k">SELECT</span> cron.<span class="f">unschedule</span>(<span class="n">jobid</span>) <span class="k">FROM</span> cron.<span class="n">job</span> <span class="k">WHERE</span> <span class="n">jobname</span> = <span class="s">'mobifix-keepalive'</span>;
-<span class="k">SELECT</span> cron.<span class="f">schedule</span>(
-  <span class="s">'mobifix-keepalive'</span>,
-  <span class="s">'0 12 * * *'</span>,
-  <span class="s">$$SELECT mobifix_keepalive()$$</span>
-);
-
-<span class="c">-- ✅ اكتمل الإعداد بنجاح</span></pre>
-          </div>
+ALTER TABLE sync_data ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "mobifix_access" ON sync_data;
+CREATE POLICY "mobifix_access" ON sync_data FOR ALL USING (true) WITH CHECK (true);
+          </pre>
         </div>
-
-        <div class="inner-step">
-          <div class="inner-step-title">
-            <div class="icon">▶️</div>
-            تشغيل الكود
-          </div>
-          <ul>
-            <li>بعد لصق الكود، اضغط زر <strong>"Run"</strong> الأخضر في أسفل أو أعلى الصفحة</li>
-            <li>انتظر بضع ثوانٍ حتى تظهر النتيجة</li>
-            <li>لو ظهرت رسالة باللون الأخضر → <strong style="color:#16a34a;">نجح كل شيء ✅</strong></li>
-            <li>لو ظهر خطأ يذكر <strong>pg_cron</strong> فقط → لا تقلق، الجدول الرئيسي نجح وهو الأهم</li>
-          </ul>
-        </div>
-
-        <div class="alert alert-warn">
-          <span class="alert-icon">⚠️</span>
-          <span>لو ظهر خطأ باللون الأحمر لا يذكر pg_cron — أعد نسخ الكود ولصقه والتأكد إنه كامل بدون حذف أي سطر، ثم اضغط Run مرة أخرى</span>
-        </div>
-
         <div class="nav-btns">
           <button class="btn-prev" onclick="prevStep(2)">→ السابق</button>
-          <button class="btn-next" onclick="nextStep(2)">التالي — جلب المفاتيح ←</button>
+          <button class="btn-next" onclick="nextStep(2)">التالي ←</button>
         </div>
       </div>
     </div>
@@ -801,70 +574,12 @@ $$;
         <div class="step-num-big">3</div>
         <div>
           <h2>الحصول على مفاتيح الربط</h2>
-          <p>رابط + مفتاح — كلاهما في نفس المكان</p>
+          <p>رابط المشروع ومفتاح anon</p>
         </div>
       </div>
       <div class="step-card-body">
-        <div class="inner-step">
-          <div class="inner-step-title">
-            <div class="icon">🔍</div>
-            كيف تصل لصفحة المفاتيح؟
-          </div>
-          <p style="margin-bottom:10px;"><strong>الطريقة الأسرع:</strong></p>
-          <div class="path-display">
-            <span class="path-item">🔍 شريط البحث العلوي</span>
-            <span class="path-arrow">←</span>
-            <span class="path-item">اكتب: API</span>
-            <span class="path-arrow">←</span>
-            <span class="path-item">اختر: Project API keys</span>
-          </div>
-          <p style="margin-top:12px; font-size:13px; color:var(--text-light);">أو من القائمة الجانبية: <strong>Settings ⚙️</strong> ← <strong>API</strong></p>
-        </div>
-
-        <div class="inner-step">
-          <div class="inner-step-title">
-            <div class="icon">🔗</div>
-            أولاً — رابط المشروع (Project URL)
-          </div>
-          <ul>
-            <li>ابحث عن قسم <strong>"Project URL"</strong> في الصفحة</li>
-            <li>الرابط شكله هكذا:<br>
-              <span style="font-family:monospace; background:#f1f5f9; padding:4px 10px; border-radius:6px; font-size:13px; display:inline-block; margin-top:6px; direction:ltr;">https://abcdefghijkl.supabase.co</span>
-            </li>
-            <li>اضغط <strong>Copy</strong> بجانبه أو انسخه يدوياً كاملاً</li>
-          </ul>
-          <div class="alert alert-warn" style="margin-top:12px;">
-            <span class="alert-icon">⚠️</span>
-            <span>لا تأخذ الرابط من شريط عنوان المتصفح — خذه فقط من قسم "Project URL" في صفحة API</span>
-          </div>
-        </div>
-
-        <div class="inner-step">
-          <div class="inner-step-title">
-            <div class="icon">🔑</div>
-            ثانياً — مفتاح الوصول (API Key)
-          </div>
-          <ul>
-            <li>في نفس الصفحة، ابحث عن قسم <strong>"Project API keys"</strong></li>
-            <li>ستجد مفتاحين — نريد <strong style="color:var(--teal-dark);">anon</strong> و <strong style="color:var(--teal-dark);">public</strong> فقط</li>
-            <li>اضغط <strong>Copy</strong> بجانب المفتاح الذي يكتب عنده <strong>anon</strong> و <strong>public</strong></li>
-            <li>المفتاح طويل جداً ويبدأ بـ <span style="font-family:monospace; font-size:12px; direction:ltr;">eyJhbGci...</span></li>
-          </ul>
-          <div class="alert alert-danger" style="margin-top:12px;">
-            <span class="alert-icon">🚫</span>
-            <span>لا تأخذ مفتاح <strong>service_role</strong> — هذا مفتاح سري وخطير. خذ فقط <strong>anon / public</strong></span>
-          </div>
-        </div>
-
-        <div class="alert alert-success">
-          <span class="alert-icon">✅</span>
-          <span>الآن عندك: <strong>رابط المشروع</strong> + <strong>مفتاح anon</strong> — هذا كل ما تحتاجه للخطوة الأخيرة</span>
-        </div>
-
-        <div class="nav-btns">
-          <button class="btn-prev" onclick="prevStep(3)">→ السابق</button>
-          <button class="btn-next" onclick="nextStep(3)">التالي — صنع ملف التفعيل ←</button>
-        </div>
+        <p>قم بجلب الـ Project URL والـ Anon Key وضعهم في الحقول بالأسفل لتوليد ملف التفعيل.</p>
+        <div class="nav-btns"><button class="btn-prev" onclick="prevStep(3)">→ السابق</button></div>
       </div>
     </div>
   </div>
@@ -885,25 +600,21 @@ $$;
           <div class="form-group">
             <label>🔗 رابط المشروع (Project URL)</label>
             <input type="text" id="inp_url" placeholder="سيتم ملؤه تلقائياً أو اكتبه يدوياً">
-            <div class="form-hint">⚡ من صفحة API ← قسم Project URL أو من البناء التلقائي</div>
           </div>
           
           <div class="form-group">
             <label>🔑 مفتاح الوصول (anon public key)</label>
             <input type="text" id="inp_key" placeholder="سيتم ملؤه تلقائياً أو اكتبه يدوياً">
-            <div class="form-hint">⚡ مفتاح anon public الطويل جداً لحماية اتصالك</div>
           </div>
           
           <div class="form-group">
             <label>🏪 اسم مركزك</label>
             <input type="text" id="inp_name" placeholder="مثال: مركز عزو للصيانة" style="direction: rtl; text-align: right;">
-            <div class="form-hint">⚡ سيُستخدم لتمييز ملفك داخل الهاتف والمنظومة</div>
           </div>
           
           <div class="form-group">
             <label>🔒 كلمة سر السحابة المعينة لك</label>
             <input type="text" id="inp_pass" placeholder="سيتم تعيين رمز أمان تلقائي أو اختره بنفسك">
-            <div class="form-hint">⚡ الرمز السري الخاص بك لتفويض الدخول والخروج من السيرفر</div>
           </div>
           
           <button class="btn-generate" onclick="generateFile()">
@@ -911,67 +622,13 @@ $$;
           </button>
           
           <div id="successBox" class="success-box">
-            <div style="font-size:40px; margin-bottom:10px;">🎉</div>
-            <h4>تم صنع وتحميل ملف التفعيل بنجاح حقيقي!</h4>
-            <div class="filename" id="fileNameDisplay"></div>
-            <p>الآن افتح منظومة Mobifix ← الإعدادات السحابية<br>← اضغط "رفع ملف التفعيل" ← اختر الملف المحمّل</p>
-          </div>
-        </div>
-
-        <div style="margin-top:28px;">
-          <h3 style="font-size:16px; font-weight:900; color:var(--slate); margin-bottom:16px; text-align: right;">Analyse 📲 الخطوات النهائية في المنظومة</h3>
-
-          <div class="final-step">
-            <div class="final-step-icon">📱</div>
-            <div>
-              <h4>افتح تطبيق Mobifix على جهازك</h4>
-              <p>تأكد من اتصالك بالإنترنت قبل المتابعة</p>
-            </div>
-          </div>
-
-          <div class="final-step">
-            <div class="final-step-icon">⚙️</div>
-            <div>
-              <h4>ادخل برمز المدير ← صفحة الإعدادات</h4>
-              <p>اضغط على تبويب الإعدادات في أسفل الشاشة</p>
-            </div>
-          </div>
-
-          <div class="final-step">
-            <div class="final-step-icon">☁️</div>
-            <div>
-              <h4>قسم الربط السحابي ← "تفعيل مراقبة المركز"</h4>
-              <p>اختر ملف التفعيل (.json) الذي قمت بتحميله للتو</p>
-            </div>
-          </div>
-
-          <div class="final-step">
-            <div class="final-step-icon">⏳</div>
-            <div>
-              <h4>انتظر 3 دقائق حتى يكتمل الربط</h4>
-              <p>لا تغلق التطبيق — ستظهر رسالة "تم التفعيل بنجاح" عند الاكتمال</p>
-            </div>
-          </div>
-
-          <div class="final-step" style="border-color:var(--teal-dark); background:var(--teal-light);">
-            <div class="final-step-icon" style="background:var(--teal-dark); color:white;">🎉</div>
-            <div>
-              <h4 style="color:var(--teal-deeper);">مبروك — مركزك متصل بالسحابة!</h4>
-              <p>يمكنك الآن مراقبة المركز من أي مكان في العالم</p>
-            </div>
+            <h4>🎉 تم صنع وتحميل ملف التفعيل بنجاح حقيقي!</h4>
+            <div id="fileNameDisplay" style="font-weight:bold; margin: 10px 0;"></div>
+            <p>الآن افتح منظومة Mobifix ← الإعدادات السحابية ← رفع ملف التفعيل</p>
           </div>
         </div>
       </div>
     </div>
-  </div>
-
-  <div class="footer-box">
-    <h3>🔒 بياناتك ملكك وحدك تماماً</h3>
-    <p>
-      أنت من أنشأ السيرفر بنفسك في Supabase — لا أحد يمتلك كلمة مرورك غيرك.<br>
-      حتى فريق Mobifix لا يستطيع الوصول لبيانات مركزك أبداً.
-    </p>
-    <p style="margin-top:12px; font-size:11px; color:rgba(255,255,255,0.3);">Mobifix PRO — الشريك التقني لنجاح مركز الصيانة</p>
   </div>
 
 </div>
@@ -987,60 +644,23 @@ function showToast(msg, isError) {
     t.textContent = msg;
     t.className = isError ? 'error' : '';
     t.classList.add('show');
-    setTimeout(function() { t.classList.remove('show'); }, 3000);
+    setTimeout(function() { t.classList.remove('show'); }, 4000);
   }
 }
 
 function switchMode(mode) {
   currentMode = mode;
-  var btnAuto = document.getElementById('btnModeAuto');
-  var btnManual = document.getElementById('btnModeManual');
-  var viewAuto = document.getElementById('viewAutomatic');
-  var viewManual = document.getElementById('viewManual');
-
-  if(btnAuto) btnAuto.className = 'mode-btn' + (mode === 'auto' ? ' active' : '');
-  if(btnManual) btnManual.className = 'mode-btn' + (mode === 'manual' ? ' active' : '');
-  
-  if (mode === 'auto') {
-    if(viewAuto) viewAuto.style.display = 'block';
-    if(viewManual) viewManual.style.display = 'none';
-  } else {
-    if(viewAuto) viewAuto.style.display = 'none';
-    if(viewManual) viewManual.style.display = 'block';
-    goTo(1); // البدء بالخطوة الأولى تلقائياً عند الدخول للمود اليدوي
-  }
-}
-
-function updateNav(step) {
-  for (var i = 1; i <= 4; i++) {
-    var nav = document.getElementById('nav' + i);
-    if(!nav) continue;
-    nav.className = 'nav-step';
-    if (i < step) nav.classList.add('done');
-    else if (i === step) nav.classList.add('active');
-    var num = nav.querySelector('.num');
-    if(num) {
-      if (i < step) num.textContent = '✓';
-      else num.textContent = i;
-    }
-  }
+  document.getElementById('btnModeAuto').className = 'mode-btn' + (mode === 'auto' ? ' active' : '');
+  document.getElementById('btnModeManual').className = 'mode-btn' + (mode === 'manual' ? ' active' : '');
+  document.getElementById('viewAutomatic').style.display = mode === 'auto' ? 'block' : 'none';
+  document.getElementById('viewManual').style.display = mode === 'manual' ? 'block' : 'none';
 }
 
 function goTo(step) {
-  if (step === 4) {
-    // خطوة 4 هي نموذج دائم موجود بالأسفل
-    updateNav(4);
-    window.scrollTo({ top: document.getElementById('sectionFormAndGenerate').offsetTop - 10, behavior: 'smooth' });
-    return;
-  }
-  
   document.getElementById('step' + currentStep).classList.remove('active');
   document.getElementById('step' + step).classList.add('active');
   currentStep = step;
-  updateNav(step);
-  window.scrollTo({ top: document.querySelector('#viewManual .steps-nav').offsetTop - 10, behavior: 'smooth' });
 }
-
 function nextStep(from) { goTo(from + 1); }
 function prevStep(from) { goTo(from - 1); }
 
@@ -1048,20 +668,17 @@ window.onload = function () {
   try {
     client = google.accounts.oauth2.initTokenClient({
       client_id: '243311469446-1r7ui2cn94g7t67cr4ftlk4i9uipg147.apps.googleusercontent.com',
-      scope: 'https://www.googleapis.com/auth/userinfo.email profile',
+      scope: 'https://www.googleapis.com/auth/userinfo.email profile openid',
       callback: handleTokenResponse
     });
   } catch(e) {
-    console.log("Google library loading status: waiting.");
+    console.log("جاري تحميل مكتبة جوجل...");
   }
 };
 
 function loginWithGoogle() {
-  if (client) {
-    client.requestAccessToken();
-  } else {
-    showToast('❌ جاري تحميل مكتبة تسجيل جوجل، انتظر ثانية وحاول مجدداً', true);
-  }
+  if (client) { client.requestAccessToken(); } 
+  else { showToast('❌ جاري تحميل مكتبة جوجل، انتظر ثوانٍ وحاول مجدداً', true); }
 }
 
 function handleTokenResponse(response) {
@@ -1073,7 +690,9 @@ function handleTokenResponse(response) {
   var statusBox = document.getElementById('loadingStatus');
   if(statusBox) {
     statusBox.style.display = 'block';
-    statusBox.textContent = '⏳ تم التفويض بنجاح! جاري جلب البريد وبناء سيرفرك المستقل في سوبابيز...';
+    statusBox.style.background = '#f8fafc';
+    statusBox.style.color = 'var(--teal-dark)';
+    statusBox.textContent = '⏳ تم التفويض بنجاح! جاري الاتصال بالـ Worker لبناء سيرفرك المستقل وزراعة الجداول...';
   }
 
   fetch('https://www.googleapis.com/oauth2/v3/userinfo?access_token=' + response.access_token)
@@ -1089,10 +708,13 @@ function handleTokenResponse(response) {
       })
     });
   })
-  .then(function(res) { return res.json(); })
+  .then(function(res) {
+    return res.json().then(function(data) {
+      if (!res.ok) { throw new Error(data.error || 'فشل غير معروف في السيرفر السحابي'); }
+      return data;
+    });
+  })
   .then(function(data) {
-    if (data.error) throw new Error(data.error);
-
     document.getElementById('inp_url').value = data.url || '';
     document.getElementById('inp_key').value = data.key || '';
     document.getElementById('inp_pass').value = data.password || '';
@@ -1100,48 +722,31 @@ function handleTokenResponse(response) {
     if(statusBox) {
       statusBox.style.background = 'var(--green-light)';
       statusBox.style.color = 'var(--green)';
-      statusBox.textContent = '✅ نجح السحر البرمجي! تم بناء سيرفرك وزراعة الجداول بالكامل بنجاح حقيقي.';
+      statusBox.textContent = '✅ نجح الاتصال بالكامل! تم بناء سيرفرك وزراعة جداول sync_data بنجاح وبدون أي تدخل بشري.';
     }
-    showToast('🎉 اكتمل الإعداد التلقائي بنجاح!', false);
-    
-    // سحب العرض مباشرة للأسفل لرؤية الملف الجاهز للتحميل
+    showToast('🎉 اكتمل الإعداد التلقائي بنجاح تام!', false);
     window.scrollTo({ top: document.getElementById('sectionFormAndGenerate').offsetTop - 10, behavior: 'smooth' });
   })
   .catch(function(err) {
     if(statusBox) {
       statusBox.style.background = 'var(--red-light)';
       statusBox.style.color = 'var(--red)';
-      statusBox.textContent = '❌ تعذر التفعيل التلقائي: ' + err.message;
+      statusBox.innerHTML = '❌ <strong>فشل التفعيل التلقائي:</strong><br>' + err.message;
     }
-    showToast('❌ فشل الاتصال بالسيرفر السحابي', true);
+    showToast('❌ فشل إتمام البناء التلقائي في الخلفية', true);
   });
 }
 
 function copySQL(btn) {
   var code = document.getElementById('sqlCode');
   var text = code.innerText || code.textContent;
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text).then(function() {
-      btn.textContent = '✅ تم النسخ!';
-      btn.classList.add('copied');
-      showToast('✅ تم نسخ الكود بنجاح!', false);
-      setTimeout(function() {
-        btn.textContent = '📋 نسخ الكود';
-        btn.classList.remove('copied');
-      }, 3000);
-    });
-  } else {
-    var ta = document.createElement('textarea');
-    ta.value = text;
-    ta.style.cssText = 'position:fixed;left:-9999px;top:0;';
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand('copy');
-    document.body.removeChild(ta);
-    btn.textContent = '✅ تم النسخ!';
-    showToast('✅ تم نسخ الكود بنجاح!', false);
-    setTimeout(function() { btn.textContent = '📋 نسخ الكود'; }, 3000);
-  }
+  var ta = document.createElement('textarea');
+  ta.value = text;
+  document.body.appendChild(ta);
+  ta.select();
+  document.execCommand('copy');
+  document.body.removeChild(ta);
+  showToast('✅ تم نسخ الكود بنجاح!', false);
 }
 
 function generateFile() {
@@ -1151,25 +756,16 @@ function generateFile() {
   var pass = document.getElementById('inp_pass').value.trim();
 
   if (!url || !key || !name || !pass) {
-    showToast('❌ يرجى ملء البيانات أو تسجيل الدخول بجوجل أولاً للتفعيل', true);
+    showToast('❌ يرجى ملء البيانات أو تسجيل الدخول بجوجل أولاً', true);
     return;
   }
-
-  // تنظيف الرابط
-  if (!url.startsWith('http')) url = 'https://' + url;
-  if (url.endsWith('/')) url = url.slice(0, -1);
 
   var now = new Date();
   var pad = function(n) { return n.toString().padStart(2, '0'); };
   var dateStr = now.getFullYear().toString() + pad(now.getMonth()+1) + pad(now.getDate());
-  var timeStr = pad(now.getHours()) + pad(now.getMinutes());
   
-  var namePart = name
-    .replace(/\s+/g, '')
-    .replace(/[^\u0600-\u06FFa-zA-Z0-9]/g, '')
-    .substring(0, 12);
-    
-  var syncId = namePart + '_' + dateStr + '_' + timeStr;
+  var namePart = name.replace(/\s+/g, '').substring(0, 12);
+  var syncId = namePart + '_' + dateStr;
 
   var config = {
     cloudUrl: url,
@@ -1177,7 +773,6 @@ function generateFile() {
     cloudSyncId: syncId,
     cloudAccessCode: pass,
     centerName: name,
-    generatedAt: now.toLocaleString('ar-LY'),
     version: 'Mobifix_PRO_v4'
   };
 
@@ -1190,12 +785,11 @@ function generateFile() {
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-  URL.revokeObjectURL(burl);
 
   document.getElementById('fileNameDisplay').textContent = fname;
   document.getElementById('successBox').classList.add('show');
-  showToast('🎉 تم تحميل ملف التفعيل بنجاح واكتملت المنظومة السحابية!', false);
 }
 </script>
 </body>
 </html>
+
