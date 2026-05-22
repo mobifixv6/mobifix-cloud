@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>دليل تفعيل المراقبة السحابية — Mobifix PRO</title>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght=300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -189,43 +189,17 @@ body {
 }
 .supabase-btn-custom:hover { transform: translateY(-1px); border-color: var(--supabase-green); }
 
-/* ===== PROGRESS BAR AND LOADING ===== */
 .loading-status {
   display: none;
   margin: 20px 0;
-  padding: 20px;
+  padding: 15px;
   background: #f8fafc;
-  border-radius: 16px;
+  border-radius: 12px;
   border: 1px solid #e2e8f0;
   font-size: 14px;
   font-weight: 700;
   color: var(--teal-dark);
   line-height: 1.7;
-  text-align: right;
-}
-.progress-container {
-  width: 100%;
-  background-color: #e2e8f0;
-  border-radius: 10px;
-  overflow: hidden;
-  margin-top: 15px;
-  display: none;
-  height: 12px;
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
-}
-.progress-bar {
-  width: 0%;
-  height: 100%;
-  background: linear-gradient(90deg, var(--teal), var(--supabase-green));
-  transition: width 1s linear;
-}
-.countdown-text {
-  font-weight: 900;
-  color: var(--gold);
-  font-size: 15px;
-  margin-top: 8px;
-  display: block;
-  text-align: center;
 }
 
 /* ===== STEP CARD ===== */
@@ -440,23 +414,6 @@ body {
 }
 .btn-generate:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(15,118,110,0.4); }
 
-.btn-download-trigger {
-  width: 100%;
-  background: linear-gradient(135deg, #16a34a, #15803d);
-  color: white;
-  border: none;
-  padding: 16px;
-  border-radius: 14px;
-  font-size: 16px; font-weight: 900;
-  font-family: 'Tajawal', sans-serif;
-  cursor: pointer;
-  transition: all 0.2s;
-  margin-top: 15px;
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-  box-shadow: 0 6px 15px rgba(22,163,74,0.3);
-}
-.btn-download-trigger:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(22,163,74,0.4); }
-
 /* ===== SUCCESS BOX ===== */
 .success-box {
   display: none;
@@ -592,7 +549,6 @@ body {
 <script>
 var currentMode = 'auto';
 var currentStep = 1;
-var countdownInterval = null;
 
 function showToast(msg, isError) {
   var t = document.getElementById('toast');
@@ -666,9 +622,6 @@ function startAutomatedBuild() {
   var name = document.getElementById('auto_center_name').value.trim();
   var token = document.getElementById('auto_access_token').value.trim();
   var statusBox = document.getElementById('loadingStatus');
-  var progressContainer = document.getElementById('progressContainer');
-  var progressBar = document.getElementById('progressBar');
-  var countdownText = document.getElementById('countdownText');
 
   if (!name || !token) {
     showToast('❌ يرجى إدخال اسم المركز ورمز الـ Access Token أولاً!', true);
@@ -679,30 +632,7 @@ function startAutomatedBuild() {
     statusBox.style.display = 'block';
     statusBox.style.background = '#f8fafc';
     statusBox.style.color = 'var(--teal-dark)';
-    statusBox.innerHTML = '⏳ <strong>جاري بدء البناء السحابي...</strong> يتم الآن الاتصال بخادم كلود فلير لإنشاء مشروعك المستقل وزراعة جداول قاعدة البيانات والـ Keepalive التلقائي بنجاح حقيقي في حسابك سوبابيز، يرجى الانتظار ولا تغلق الصفحة...';
-  }
-
-  if(progressContainer && progressBar && countdownText) {
-    progressContainer.style.display = 'block';
-    progressBar.style.width = '0%';
-    
-    var timeLeft = 60;
-    countdownText.textContent = '⏱️ الوقت المتبقي المقدر للتهيئة: ' + timeLeft + ' ثانية';
-    
-    if(countdownInterval) clearInterval(countdownInterval);
-    
-    countdownInterval = setInterval(function() {
-      timeLeft--;
-      var percent = ((60 - timeLeft) / 60) * 100;
-      progressBar.style.width = percent + '%';
-      
-      if(timeLeft > 0) {
-        countdownText.textContent = '⏱️ الوقت المتبقي المقدر للتهيئة: ' + timeLeft + ' ثانية';
-      } else {
-        countdownText.textContent = '⏳ جاري إنهاء اللمسات الأخيرة والتحقق من الجداول...';
-        clearInterval(countdownInterval);
-      }
-    }, 1000);
+    statusBox.innerHTML = '⏳ جاري بدء البناء السحابي... يتم الآن إنشاء مشروعك المستقل وتجهيز كود الـ SQL على سيرفرات سوبابيز، يرجى الانتظار ولا تغلق الصفحة (تستغرق العملية حوالي 65 ثانية لضمان إقلاع السيرفر وتأمين قاعدة البيانات بالكامل)...';
   }
 
   var workerUrl = 'https://mobifix-auto-cloud.moaz94allboudy.workers.dev/'; 
@@ -719,10 +649,6 @@ function startAutomatedBuild() {
     });
   })
   .then(function(data) {
-    if(countdownInterval) clearInterval(countdownInterval);
-    if(progressBar) progressBar.style.width = '100%';
-    if(countdownText) countdownText.textContent = '✨ اكتملت العملية بنجاح!';
-
     document.getElementById('inp_url').value = data.url || '';
     document.getElementById('inp_key').value = data.key || '';
     document.getElementById('inp_name').value = name;
@@ -733,16 +659,14 @@ function startAutomatedBuild() {
       statusBox.style.color = 'var(--green)';
       statusBox.innerHTML = '✅ نجح السحر البرمجي! تم بناء سيرفرك وزراعة الجداول وإعداد نظام الأمان بنجاح تام وحقيقي في حسابك.';
     }
-    showToast('🎉 اكتمل الإعداد التلقائي بنجاح تام!', false);
+    showToast('🎉 اكتمل الإعداد التلقائي بنجاح!', false);
     
     var targetEl = document.getElementById('sectionFormAndGenerate');
     if(targetEl) window.scrollTo({ top: targetEl.offsetTop - 10, behavior: 'smooth' });
     
-    prepareDownloadUI();
+    generateFile();
   })
   .catch(function(err) {
-    if(countdownInterval) clearInterval(countdownInterval);
-    if(progressContainer) progressContainer.style.display = 'none';
     if(statusBox) {
       statusBox.style.background = 'var(--red-light)';
       statusBox.style.color = 'var(--red)';
@@ -750,23 +674,6 @@ function startAutomatedBuild() {
     }
     showToast('❌ فشل إعداد السيرفر السحابي الآلي', true);
   });
-}
-
-function prepareDownloadUI() {
-  var name = document.getElementById('inp_name').value.trim();
-  var now = new Date();
-  var pad = function(n) { return n.toString().padStart(2, '0'); };
-  var dateStr = now.getFullYear().toString() + pad(now.getMonth()+1) + pad(now.getDate());
-  
-  var namePart = name
-    .replace(/\s+/g, '')
-    .replace(/[^\u0600-\u06FFa-zA-Z0-9]/g, '')
-    .substring(0, 12);
-    
-  var fname = 'مراقبة_' + namePart + '_' + dateStr + '.json';
-
-  document.getElementById('fileNameDisplay').textContent = fname;
-  document.getElementById('successBox').classList.add('show');
 }
 
 function copySQL(btn) {
@@ -803,7 +710,7 @@ function generateFile() {
   var pass = document.getElementById('inp_pass').value.trim();
 
   if (!url || !key || !name || !pass) {
-    showToast('❌ يرجى ملء البيانات أولاً للتفعيل وصنع الملف', true);
+    showToast('❌ يرجى ملء البيانات أو استخدام التفعيل التلقائي أولاً للتفعيل', true);
     return;
   }
 
@@ -843,7 +750,9 @@ function generateFile() {
   document.body.removeChild(a);
   URL.revokeObjectURL(burl);
 
-  showToast('📥 تم تحميل ملف التفعيل بنجاح واكتملت المنظومة السحابية!', false);
+  document.getElementById('fileNameDisplay').textContent = fname;
+  document.getElementById('successBox').classList.add('show');
+  showToast('🎉 تم صنع وتحميل ملف التفعيل بنجاح واكتملت المنظومة السحابية!', false);
 }
 </script>
 </head>
@@ -903,10 +812,6 @@ function generateFile() {
       </div>
 
       <div class="loading-status" id="loadingStatus">جاري انتظار إدخال البيانات لبدء البناء التلقائي...</div>
-      <div class="progress-container" id="progressContainer">
-        <div class="progress-bar" id="progressBar"></div>
-        <span class="countdown-text" id="countdownText">⏱️ الوقت المتبقي المقدر للتهيئة: 60 ثانية</span>
-      </div>
     </div>
   </div>
 
@@ -1036,12 +941,12 @@ function generateFile() {
 <span class="k">CREATE TABLE IF NOT EXISTS</span> <span class="n">sync_data</span> (
   <span class="n">center_name</span>  <span class="k">TEXT PRIMARY KEY</span>,
   <span class="n">devices</span>      <span class="k">JSONB NOT NULL DEFAULT</span> <span class="s">'[]'</span>,
-  <span class="n">employees</span>    <span class="k">JSONB NOT NULL DEFAULT</span> <span class="s">'[]'</span>,
-  <span class="n">attendance</span>   <span class="k">JSONB NOT NULL DEFAULT</span> <span class="s">'[]'</span>,
-  <span class="n">expenses</span>     <span class="k">JSONB NOT NULL DEFAULT</span> <span class="s">'[]'</span>,
-  <span class="n">settings     <span class="k">JSONB NOT NULL DEFAULT</span> <span class="s">'{}'</span>,
+  <span class="n">employees    </span>  <span class="k">JSONB NOT NULL DEFAULT</span> <span class="s">'[]'</span>,
+  <span class="n">attendance   </span>  <span class="k">JSONB NOT NULL DEFAULT</span> <span class="s">'[]'</span>,
+  <span class="n">expenses     </span>  <span class="k">JSONB NOT NULL DEFAULT</span> <span class="s">'[]'</span>,
+  <span class="n">settings     </span>  <span class="k">JSONB NOT NULL DEFAULT</span> <span class="s">'{}'</span>,
   <span class="n">last_updated</span> <span class="k">BIGINT NOT NULL DEFAULT</span> 0,
-  <span class="n">metadata     <span class="k">JSONB DEFAULT</span> <span class="s">'{}'</span>
+  <span class="n">metadata     </span>  <span class="k">JSONB DEFAULT</span> <span class="s">'{}'</span>
 );
 
 <span class="k">ALTER TABLE</span> <span class="n">sync_data</span> <span class="k">ENABLE ROW LEVEL SECURITY</span>;
@@ -1078,133 +983,4 @@ function generateFile() {
       <span class="f">jsonb_build_object</span>(
         <span class="s">'source'</span>, <span class="s">'auto_keepalive'</span>,
         <span class="s">'reason'</span>, <span class="s">'5_days_no_activity'</span>,
-        <span class="s">'triggered_at'</span>, <span class="f">to_char</span>(now(), <span class="s">'YYYY-MM-DD HH24:MI:SS'</span>)
-      )
-    )
-    <span class="k">ON CONFLICT</span> (<span class="n">center_name</span>) <span class="k">DO UPDATE SET</span>
-      <span class="n">last_updated = EXCLUDED.last_updated,
-      metadata     = EXCLUDED.metadata;
-  END IF;
-END;
-$$;
 
-SELECT cron.unschedule(jobid) FROM cron.job WHERE jobname = 'mobifix-keepalive';
-SELECT cron.schedule(
-  'mobifix-keepalive',
-  '0 12 * * *',
-  $$SELECT mobifix_keepalive()$$
-);</pre>
-          </div>
-        </div>
-
-        <div class="nav-btns">
-          <button class="btn-prev" onclick="prevStep(2)">→ السابق</button>
-          <button class="btn-next" onclick="nextStep(2)">التالي — جلب المفاتيح ←</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="step-card" id="step3">
-      <div class="step-card-header">
-        <div class="step-num-big">3</div>
-        <div>
-          <h2>الحصول على مفاتيح الربط</h2>
-          <p>رابط + مفتاح — كلاهما في نفس المكان</p>
-        </div>
-      </div>
-      <div class="step-card-body">
-        <div class="inner-step">
-          <div class="inner-step-title">
-            <div class="icon">🔍</div>
-            كيف تصل لصفحة المفاتيح?</div>
-          <div class="path-display">
-            <span class="path-item">Settings ⚙️</span>
-            <span class="path-arrow">←</span>
-            <span class="path-item">API</span>
-          </div>
-        </div>
-
-        <div class="inner-step">
-          <div class="inner-step-title">
-            <div class="icon">🔗</div>
-            رابط المشروع (Project URL)
-          </div>
-          <p>اضغط <strong>Copy</strong> بجانب الحقل الموجود داخل قسم Project URL.</p>
-        </div>
-
-        <div class="inner-step">
-          <div class="inner-step-title">
-            <div class="icon">🔑</div>
-            مفتاح الوصول (API Key)
-          </div>
-          <p>انسخ مفتاح الـ <strong>anon / public</strong> الطويل جداً.</p>
-        </div>
-
-        <div class="nav-btns">
-          <button class="btn-prev" onclick="prevStep(3)">→ السابق</button>
-          <button class="btn-next" onclick="nextStep(3)">التالي — صنع ملف التفعيل ←</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div id="sectionFormAndGenerate" style="display: block; margin-top: 25px;">
-    <div class="step-card" id="step4" style="display: block;">
-      <div class="step-card-header">
-        <div class="step-num-big">📋</div>
-        <div>
-          <h2>بيانات السحابة المستخرجة لملف التفعيل</h2>
-          <p>تأكد من البيانات لإنشاء وتحميل ملف الربط السحابي</p>
-        </div>
-      </div>
-      <div class="step-card-body">
-        <div class="gen-form">
-          <h3>📝 مراجعة وتعديل بيانات الملف</h3>
-          
-          <div class="form-group">
-            <label>🔗 رابط المشروع (Project URL)</label>
-            <input type="text" id="inp_url" placeholder="سيتم ملؤه تلقائياً أو اكتبه يدوياً">
-          </div>
-          
-          <div class="form-group">
-            <label>🔑 مفتاح الوصول (anon public key)</label>
-            <input type="text" id="inp_key" placeholder="سيتم ملؤه تلقائياً أو اكتبه يدوياً">
-          </div>
-          
-          <div class="form-group">
-            <label>🏪 اسم مركزك</label>
-            <input type="text" id="inp_name" placeholder="مثال: مركز Mobifix للصيانة" style="direction: rtl; text-align: right;">
-          </div>
-          
-          <div class="form-group">
-            <label>🔒 كلمة سر السحابة المعينة لك</label>
-            <input type="text" id="inp_pass" placeholder="سيتم تعيين رمز أمان تلقائي أو اختره بنفسك">
-          </div>
-          
-          <div id="successBox" class="success-box">
-            <div style="font-size:40px; margin-bottom:10px;">🎉</div>
-            <h4>تم تجهيز وبناء السحابة بنجاح تام!</h4>
-            <p>الملف السحابي الخاص بمركزك جاهز للتوليد الآن. اضغط على الزر أدناه لحفظه في هاتفك:</p>
-            <div class="filename" id="fileNameDisplay"></div>
-            
-            <button class="btn-download-trigger" onclick="generateFile()">
-              📥 تحميل ملف تفعيل السحابة الآن
-            </button>
-            
-            <p style="margin-top:15px; font-size:12px; color:#15803d; font-weight:700;">
-              بعد التحميل: افتح منظومة Mobifix ← الإعدادات السحابية ← اضغط "رفع ملف التفعيل" واقرا الملف.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="footer-box">
-    <h3>🔒 بياناتك ملكك وحدك تماماً</h3>
-    <p>Mobifix PRO — الشريك التقني لنجاح مركز الصيانة</p>
-  </div>
-
-</div>
-</body>
-</html>
