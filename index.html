@@ -189,17 +189,43 @@ body {
 }
 .supabase-btn-custom:hover { transform: translateY(-1px); border-color: var(--supabase-green); }
 
+/* ===== PROGRESS BAR AND LOADING ===== */
 .loading-status {
   display: none;
   margin: 20px 0;
-  padding: 15px;
+  padding: 20px;
   background: #f8fafc;
-  border-radius: 12px;
+  border-radius: 16px;
   border: 1px solid #e2e8f0;
   font-size: 14px;
   font-weight: 700;
   color: var(--teal-dark);
   line-height: 1.7;
+  text-align: right;
+}
+.progress-container {
+  width: 100%;
+  background-color: #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 15px;
+  display: none;
+  height: 12px;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+}
+.progress-bar {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--teal), var(--supabase-green));
+  transition: width 1s linear;
+}
+.countdown-text {
+  font-weight: 900;
+  color: var(--gold);
+  font-size: 15px;
+  margin-top: 8px;
+  display: block;
+  text-align: center;
 }
 
 /* ===== STEP CARD ===== */
@@ -414,6 +440,23 @@ body {
 }
 .btn-generate:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(15,118,110,0.4); }
 
+.btn-download-trigger {
+  width: 100%;
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  color: white;
+  border: none;
+  padding: 16px;
+  border-radius: 14px;
+  font-size: 16px; font-weight: 900;
+  font-family: 'Tajawal', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 15px;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  box-shadow: 0 6px 15px rgba(22,163,74,0.3);
+}
+.btn-download-trigger:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(22,163,74,0.4); }
+
 /* ===== SUCCESS BOX ===== */
 .success-box {
   display: none;
@@ -547,9 +590,9 @@ body {
 </style>
 
 <script>
-// تعريف الدوال في الـ head لضمان وجودها الفوري قبل معالجة أزرار الصفحة والـ DOM
 var currentMode = 'auto';
 var currentStep = 1;
+var countdownInterval = null;
 
 function showToast(msg, isError) {
   var t = document.getElementById('toast');
@@ -623,6 +666,9 @@ function startAutomatedBuild() {
   var name = document.getElementById('auto_center_name').value.trim();
   var token = document.getElementById('auto_access_token').value.trim();
   var statusBox = document.getElementById('loadingStatus');
+  var progressContainer = document.getElementById('progressContainer');
+  var progressBar = document.getElementById('progressBar');
+  var countdownText = document.getElementById('countdownText');
 
   if (!name || !token) {
     showToast('❌ يرجى إدخال اسم المركز ورمز الـ Access Token أولاً!', true);
@@ -633,7 +679,30 @@ function startAutomatedBuild() {
     statusBox.style.display = 'block';
     statusBox.style.background = '#f8fafc';
     statusBox.style.color = 'var(--teal-dark)';
-    statusBox.innerHTML = '⏳ جاري بدء البناء السحابي... يتم الآن إنشاء مشروعك المستقل وتجهيز كود الـ SQL على سيرفرات سوبابيز، يرجى الانتظار ولا تغلق الصفحة (تستغرق العملية حوالي 10 ثوانٍ)...';
+    statusBox.innerHTML = '⏳ <strong>جاري بدء البناء السحابي...</strong> يتم الآن الاتصال بخادم كلود فلير لإنشاء مشروعك المستقل وزراعة جداول قاعدة البيانات والـ Keepalive التلقائي بنجاح حقيقي في حسابك سوبابيز، يرجى الانتظار ولا تغلق الصفحة...';
+  }
+
+  if(progressContainer && progressBar && countdownText) {
+    progressContainer.style.display = 'block';
+    progressBar.style.width = '0%';
+    
+    var timeLeft = 60;
+    countdownText.textContent = '⏱️ الوقت المتبقي المقدر للتهيئة: ' + timeLeft + ' ثانية';
+    
+    if(countdownInterval) clearInterval(countdownInterval);
+    
+    countdownInterval = setInterval(function() {
+      timeLeft--;
+      var percent = ((60 - timeLeft) / 60) * 100;
+      progressBar.style.width = percent + '%';
+      
+      if(timeLeft > 0) {
+        countdownText.textContent = '⏱️ الوقت المتبقي المقدر للتهيئة: ' + timeLeft + ' ثانية';
+      } else {
+        countdownText.textContent = '⏳ جاري إنهاء اللمسات الأخيرة والتحقق من الجداول...';
+        clearInterval(countdownInterval);
+      }
+    }, 1000);
   }
 
   var workerUrl = 'https://mobifix-auto-cloud.moaz94allboudy.workers.dev/'; 
@@ -650,6 +719,10 @@ function startAutomatedBuild() {
     });
   })
   .then(function(data) {
+    if(countdownInterval) clearInterval(countdownInterval);
+    if(progressBar) progressBar.style.width = '100%';
+    if(countdownText) countdownText.textContent = '✨ اكتملت العملية بنجاح!';
+
     document.getElementById('inp_url').value = data.url || '';
     document.getElementById('inp_key').value = data.key || '';
     document.getElementById('inp_name').value = name;
@@ -660,14 +733,16 @@ function startAutomatedBuild() {
       statusBox.style.color = 'var(--green)';
       statusBox.innerHTML = '✅ نجح السحر البرمجي! تم بناء سيرفرك وزراعة الجداول وإعداد نظام الأمان بنجاح تام وحقيقي في حسابك.';
     }
-    showToast('🎉 اكتمل الإعداد التلقائي بنجاح!', false);
+    showToast('🎉 اكتمل الإعداد التلقائي بنجاح تام!', false);
     
     var targetEl = document.getElementById('sectionFormAndGenerate');
     if(targetEl) window.scrollTo({ top: targetEl.offsetTop - 10, behavior: 'smooth' });
     
-    generateFile();
+    prepareDownloadUI();
   })
   .catch(function(err) {
+    if(countdownInterval) clearInterval(countdownInterval);
+    if(progressContainer) progressContainer.style.display = 'none';
     if(statusBox) {
       statusBox.style.background = 'var(--red-light)';
       statusBox.style.color = 'var(--red)';
@@ -675,6 +750,23 @@ function startAutomatedBuild() {
     }
     showToast('❌ فشل إعداد السيرفر السحابي الآلي', true);
   });
+}
+
+function prepareDownloadUI() {
+  var name = document.getElementById('inp_name').value.trim();
+  var now = new Date();
+  var pad = function(n) { return n.toString().padStart(2, '0'); };
+  var dateStr = now.getFullYear().toString() + pad(now.getMonth()+1) + pad(now.getDate());
+  
+  var namePart = name
+    .replace(/\s+/g, '')
+    .replace(/[^\u0600-\u06FFa-zA-Z0-9]/g, '')
+    .substring(0, 12);
+    
+  var fname = 'مراقبة_' + namePart + '_' + dateStr + '.json';
+
+  document.getElementById('fileNameDisplay').textContent = fname;
+  document.getElementById('successBox').classList.add('show');
 }
 
 function copySQL(btn) {
@@ -711,7 +803,7 @@ function generateFile() {
   var pass = document.getElementById('inp_pass').value.trim();
 
   if (!url || !key || !name || !pass) {
-    showToast('❌ يرجى ملء البيانات أو استخدام التفعيل التلقائي أولاً للتفعيل', true);
+    showToast('❌ يرجى ملء البيانات أولاً للتفعيل وصنع الملف', true);
     return;
   }
 
@@ -751,9 +843,7 @@ function generateFile() {
   document.body.removeChild(a);
   URL.revokeObjectURL(burl);
 
-  document.getElementById('fileNameDisplay').textContent = fname;
-  document.getElementById('successBox').classList.add('show');
-  showToast('🎉 تم صنع وتحميل ملف التفعيل بنجاح واكتملت المنظومة السحابية!', false);
+  showToast('📥 تم تحميل ملف التفعيل بنجاح واكتملت المنظومة السحابية!', false);
 }
 </script>
 </head>
@@ -813,6 +903,10 @@ function generateFile() {
       </div>
 
       <div class="loading-status" id="loadingStatus">جاري انتظار إدخال البيانات لبدء البناء التلقائي...</div>
+      <div class="progress-container" id="progressContainer">
+        <div class="progress-bar" id="progressBar"></div>
+        <span class="countdown-text" id="countdownText">⏱️ الوقت المتبقي المقدر للتهيئة: 60 ثانية</span>
+      </div>
     </div>
   </div>
 
@@ -945,9 +1039,9 @@ function generateFile() {
   <span class="n">employees</span>    <span class="k">JSONB NOT NULL DEFAULT</span> <span class="s">'[]'</span>,
   <span class="n">attendance</span>   <span class="k">JSONB NOT NULL DEFAULT</span> <span class="s">'[]'</span>,
   <span class="n">expenses</span>     <span class="k">JSONB NOT NULL DEFAULT</span> <span class="s">'[]'</span>,
-  <span class="n">settings</span>     <span class="k">JSONB NOT NULL DEFAULT</span> <span class="s">'{}'</span>,
+  <span class="n">settings     <span class="k">JSONB NOT NULL DEFAULT</span> <span class="s">'{}'</span>,
   <span class="n">last_updated</span> <span class="k">BIGINT NOT NULL DEFAULT</span> 0,
-  <span class="n">metadata</span>     <span class="k">JSONB DEFAULT</span> <span class="s">'{}'</span>
+  <span class="n">metadata     <span class="k">JSONB DEFAULT</span> <span class="s">'{}'</span>
 );
 
 <span class="k">ALTER TABLE</span> <span class="n">sync_data</span> <span class="k">ENABLE ROW LEVEL SECURITY</span>;
@@ -988,17 +1082,17 @@ function generateFile() {
       )
     )
     <span class="k">ON CONFLICT</span> (<span class="n">center_name</span>) <span class="k">DO UPDATE SET</span>
-      <span class="n">last_updated</span> = <span class="k">EXCLUDED</span>.<span class="n">last_updated</span>,
-      <span class="n">metadata</span>     = <span class="k">EXCLUDED</span>.<span class="n">metadata</span>;
-  <span class="k">END IF</span>;
-<span class="k">END</span>;
+      <span class="n">last_updated = EXCLUDED.last_updated,
+      metadata     = EXCLUDED.metadata;
+  END IF;
+END;
 $$;
 
-<span class="k">SELECT</span> cron.<span class="f">unschedule</span>(<span class="n">jobid</span>) <span class="k">FROM</span> cron.<span class="n">job</span> <span class="k">WHERE</span> <span class="n">jobname</span> = <span class="s">'mobifix-keepalive'</span>;
-<span class="k">SELECT</span> cron.<span class="f">schedule</span>(
-  <span class="s">'mobifix-keepalive'</span>,
-  <span class="s">'0 12 * * *'</span>,
-  <span class="s">$$SELECT mobifix_keepalive()$$</span>
+SELECT cron.unschedule(jobid) FROM cron.job WHERE jobname = 'mobifix-keepalive';
+SELECT cron.schedule(
+  'mobifix-keepalive',
+  '0 12 * * *',
+  $$SELECT mobifix_keepalive()$$
 );</pre>
           </div>
         </div>
@@ -1022,8 +1116,7 @@ $$;
         <div class="inner-step">
           <div class="inner-step-title">
             <div class="icon">🔍</div>
-            كيف تصل لصفحة المفاتيح؟
-          </div>
+            كيف تصل لصفحة المفاتيح?</div>
           <div class="path-display">
             <span class="path-item">Settings ⚙️</span>
             <span class="path-arrow">←</span>
@@ -1088,15 +1181,19 @@ $$;
             <input type="text" id="inp_pass" placeholder="سيتم تعيين رمز أمان تلقائي أو اختره بنفسك">
           </div>
           
-          <button class="btn-generate" onclick="generateFile()">
-            🚀 صنع وتحميل ملف التفعيل (.json)
-          </button>
-          
           <div id="successBox" class="success-box">
             <div style="font-size:40px; margin-bottom:10px;">🎉</div>
-            <h4>تم صنع وتحميل ملف التفعيل بنجاح حقيقي!</h4>
+            <h4>تم تجهيز وبناء السحابة بنجاح تام!</h4>
+            <p>الملف السحابي الخاص بمركزك جاهز للتوليد الآن. اضغط على الزر أدناه لحفظه في هاتفك:</p>
             <div class="filename" id="fileNameDisplay"></div>
-            <p>الآن افتح منظومة Mobifix ← الإعدادات السحابية ← اضغط "رفع ملف التفعيل"</p>
+            
+            <button class="btn-download-trigger" onclick="generateFile()">
+              📥 تحميل ملف تفعيل السحابة الآن
+            </button>
+            
+            <p style="margin-top:15px; font-size:12px; color:#15803d; font-weight:700;">
+              بعد التحميل: افتح منظومة Mobifix ← الإعدادات السحابية ← اضغط "رفع ملف التفعيل" واقرا الملف.
+            </p>
           </div>
         </div>
       </div>
@@ -1111,4 +1208,3 @@ $$;
 </div>
 </body>
 </html>
-
