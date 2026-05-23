@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobifix PRO | لوحة التحكم الذكية الفاخرة v6.5</title>
+    <style>
+        :root { 
+            --gold: #FFD700; 
+            --gold-hover: #e6c200;
+            --gold-glow: rgba(255, 215, 0, 0.15);
+            --bg: #09090b; 
+            --card: #141416; 
+            --field-bg: #1e1e22;
+            --border: #2d2d34;
+            --text: #f8fafc; 
+            --text-muted: #94a3b8;
+            --success: #10b981;
+        }
+        
+        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+        
+        body { 
+            background: var(--bg); 
+            color: var(--text); 
+            display: flex; 
+            align-items: flex-start; 
+            justify-content: center; 
+            min-height: 100vh; 
+            margin: 0; 
+            padding: 60px 20px; 
+        }
+        
+        .container { 
+            background: var(--card); 
+            padding: 40px 35px; 
+            border-radius: 24px; 
+            border: 1px solid var(--border); 
+            box-shadow: 0 25px 60px rgba(0,0,0,0.85); 
+            width: 100%; 
+            max-width: 600px; 
+        }
+        
+        .main-header { text-align: center; margin-bottom: 30px; }
+        .main-header h1 { color: var(--gold); margin: 0 0 5px 0; font-size: 28px; font-weight: 800; letter-spacing: 1px; }
+        .main-header p { color: var(--text-muted); font-size: 13px; margin: 0; }
+
+        .tabs-nav { display: flex; gap: 10px; background: #0f0f11; padding: 6px; border-radius: 14px; margin-bottom: 30px; border: 1px solid var(--border); }
+        .tab-btn { flex: 1; background: transparent; color: var(--text-muted); border: none; padding: 14px; font-size: 14px; font-weight: 700; border-radius: 10px; cursor: pointer; transition: 0.2s; margin: 0; }
+        .tab-btn.active { background: var(--gold); color: #000; box-shadow: 0 4px 12px var(--gold-glow); }
+        
+        .section-title { text-align: right; margin-bottom: 20px; }
+        .section-title h2 { color: #fff; font-size: 20px; margin: 0 0 6px 0; font-weight: 700; }
+        .section-title p { color: var(--text-muted); font-size: 13px; margin: 0; line-height: 1.5; }
+
+        .instructions-box { background: rgba(255, 215, 0, 0.02); border: 1px dashed rgba(255, 215, 0, 0.15); padding: 15px; border-radius: 14px; margin-bottom: 25px; text-align: right; }
+        .instructions-box ul { margin: 0; padding-right: 20px; color: var(--text-muted); font-size: 13px; line-height: 1.6; }
+        .instructions-box ul li span { color: var(--gold); font-weight: 600; }
+
+        .input-group { margin-bottom: 20px; text-align: right; } 
+        label { display: block; text-align: right; margin: 0 4px 8px; font-size: 14px; color: var(--gold); font-weight: 600; }
+        .en-lbl { direction: ltr; text-align: right; display: inline-block; width: 100%; }
+        
+        select, input { 
+            width: 100%; 
+            padding: 16px; 
+            background: var(--field-bg); 
+            border: 1px solid var(--border); 
+            border-radius: 12px; 
+            color: #fff; 
+            font-size: 15px; 
+            outline: none; 
+            transition: 0.3s; 
+            direction: rtl;
+        }
+        input.en-field { direction: ltr; text-align: left; }
+        select:focus, input:focus { border-color: var(--gold); box-shadow: 0 0 10px var(--gold-glow); }
+        
+        .row-flex { display: flex; gap: 10px; margin-bottom: 5px; }
+        .row-flex input { margin-bottom: 0; flex: 1; }
+        .row-flex button { margin-top: 0; width: auto; padding: 0 22px; white-space: nowrap; font-size: 14px; }
+        
+        button.action-btn { 
+            background: var(--gold); 
+            color: #000; 
+            border: none; 
+            padding: 18px; 
+            width: 100%; 
+            cursor: pointer; 
+            font-weight: 700; 
+            border-radius: 12px; 
+            font-size: 16px; 
+            transition: 0.2s; 
+            margin-top: 15px; 
+            display: block;
+        }
+        button.action-btn:hover { background: var(--gold-hover); transform: translateY(-1px); }
+        button.action-btn:active { transform: translateY(1px); }
+        
+        .btn-secondary { background: #1a1a1e; border: 1px solid var(--border); color: #fff; margin-top: 5px; margin-bottom: 5px; }
+        .btn-secondary:hover { background: #22222a; border-color: var(--gold); }
+        
+        .result-box { margin-top: 25px; padding: 20px; background: #09090b; border-radius: 16px; border: 1px dashed var(--gold); display: none; text-align: center; }
+        .code-display { font-size: 14.5px; color: var(--gold); font-family: monospace; display: block; margin: 12px 0; background: #000; padding: 14px; border-radius: 10px; text-align: left; direction: ltr; max-height: 180px; overflow-y: auto; border: 1px solid var(--border); line-height: 1.5; }
+        .copy-btn { background: #1f1f24; color: #fff; padding: 10px 20px; font-size: 13.5px; width: auto; display: inline-block; margin-top: 5px; border-radius: 8px; border: 1px solid #333; cursor: pointer; }
+        .copy-btn:hover { border-color: var(--gold); color: var(--gold); }
+        
+        /* قسم الخزنة السحابية المتزامنة والمستمرة */
+        .vault-section { margin-top: 35px; border-top: 2px dashed var(--border); padding-top: 25px; text-align: right; }
+        .vault-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; gap: 10px; }
+        .vault-title h3 { color: #fff; margin: 0; font-size: 17px; font-weight: 700; flex: 1; }
+        .vault-controls { display: flex; gap: 8px; }
+        .clear-vault-btn { background: transparent; color: #ef4444; border: 1px solid #ef4444; padding: 6px 12px; font-size: 12px; border-radius: 6px; cursor: pointer; transition: 0.2s; }
+        .clear-vault-btn:hover { background: #ef4444; color: #fff; }
+        .sync-vault-btn { background: transparent; color: var(--gold); border: 1px solid var(--gold); padding: 6px 12px; font-size: 12px; border-radius: 6px; cursor: pointer; transition: 0.2s; }
+        .sync-vault-btn:hover { background: var(--gold); color: #000; }
+        
+        .vault-table-wrapper { width: 100%; overflow-x: auto; background: #0f0f11; border: 1px solid var(--border); border-radius: 12px; }
+        .vault-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; direction: ltr; }
+        .vault-table th, .vault-table td { padding: 12px; border-bottom: 1px solid var(--border); color: var(--text); }
+        .vault-table th { background: #1a1a1e; color: var(--gold); font-weight: 600; text-align: left; }
+        .vault-table td .btn-copy-mini { background: #222; border: 1px solid #444; color: #fff; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; margin-left: 5px; }
+        .vault-table td .btn-copy-mini:hover { border-color: var(--gold); color: var(--gold); }
+        .vault-empty { padding: 20px; text-align: center; color: var(--text-muted); font-style: italic; direction: rtl; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="main-header">
+        <h1>MOBIFIX PRO</h1>
+        <p>لوحة الإشراف والتفعيل الذكي للمنظومة</p>
+    </div>
+
+    <div class="tabs-nav">
+        <button id="btnTabCloud" class="tab-btn active" onclick="switchPage('cloud')">⚡ تجهيز السحابة والـ SQL</button>
+        <button id="btnTabCodes" class="tab-btn" onclick="switchPage('codes')">🔑 توليد أكواد التفعيل</button>
+    </div>
+
+    <div id="pageCloud">
+        <div class="section-title">
+            <h2>تجهيز السحابة للزبون وتعليمات التفعيل</h2>
+            <p>قم بتوليد البريد المساعد وكلمة السر، وحفظهم تلقائياً في السحاب والذاكرة للرجوع لهم من أي متصفح.</p>
+        </div>
+
+        <div class="instructions-box">
+            <ul>
+                <li>أدخل بداية البريد واضغط <span>توليد الإيميل</span> لإنشاء الحساب والرمز السري.</li>
+                <li>عند النسخ، يتم ترتيب النص بصيغة (الإيميل ثم مسافة ثم الرمز) لسهولة القص واللصق بالهاتف.</li>
+                <li>استخدم زر المزامنة بالأسفل لاسترجاع حساباتك المخزنة لو فتحت من متصفح آخر.</li>
+            </ul>
+        </div>
+
+        <div class="input-group">
+            <label>بداية البريد الإلكتروني أو البريد كاملاً (Gmail):</label>
+            <div class="row-flex">
+                <input type="text" id="adminEmail" class="en-field" placeholder="اكتب البريد بدون مسافات، مثال: ezo" oninput="this.value=this.value.replace(/\s+/g,'')">
+                <button id="emailBtn" class="tab-btn" style="background:var(--field-bg); color:#fff; border:1px solid var(--border);" onclick="generateNextEmail()">توليد الإيميل 🔄</button>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label>البريد التسلسلي الذكي المولد بـ Plus:</label>
+            <input type="text" id="generatedEmail" class="en-field" readonly placeholder="سيظهر البريد المولد هنا">
+        </div>
+
+        <div class="input-group">
+            <label>الرمز السري المولد والمقبول للسحابة (Password):</label>
+            <input type="text" id="generatedPass" class="en-field" readonly placeholder="سيظهر الرمز السري المولد هنا">
+        </div>
+
+        <button class="action-btn btn-secondary" onclick="copyEmailAndOpenSupabase()">📋 نسخ (البريد مسافة الرمز) والتسجيل في سوبابيز 🔗</button>
+
+        <div style="border-top: 1px solid var(--border); margin: 25px 0;"></div>
+
+        <div class="input-group">
+            <label>اسم مركز الزبون (centerName):</label>
+            <input type="text" id="centerName" placeholder="مثال: Center_AlAmal">
+        </div>
+
+        <div class="input-group">
+            <label class="en-lbl">رابط السحابة للزبون (cloudUrl):</label>
+            <input type="text" id="subUrl" class="en-field" placeholder="https://xxxx.supabase.co">
+        </div>
+
+        <div class="input-group">
+            <label class="en-lbl">مفتاح السحابة العام (cloudApiKey / publishable_key / anon):</label>
+            <input type="text" id="subKey" class="en-field" placeholder="أدخل مفتاح anon التابع للزبون من سوبابيز">
+        </div>
+
+        <div class="input-group">
+            <label class="en-lbl">رمز الوصول السحابي للمنظومة (cloudAccessCode):</label>
+            <input type="text" id="subAccessCode" value="Mobifix2026" placeholder="اكتب الرمز المخصص">
+        </div>
+
+        <div class="input-group">
+            <label class="en-lbl">إصدار ملف التفعيل (version):</label>
+            <input type="text" id="subVersion" value="Mobifix_PRO_v4" placeholder="مثال: Mobifix_PRO_v4">
+        </div>
+
+        <button class="action-btn" onclick="fastCloudSetup()">⚡ تفعيل المراقبة وتنزيل ملف التفعيل JSON</button>
+
+        <div class="vault-section">
+            <div class="vault-title">
+                <h3>🗄️ خزنة الحسابات المحفوظة سحابياً ومحلياً</h3>
+                <div class="vault-controls">
+                    <button class="sync-vault-btn" onclick="syncVaultFromFirebase()">🔄 مزامنة واسترجاع ☁️</button>
+                    <button class="clear-vault-btn" onclick="clearVault()">تصفير 🗑️</button>
+                </div>
+            </div>
+            <div class="vault-table-wrapper">
+                <div id="vaultContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="pageCodes" style="display: none;">
+        <div class="section-title">
+            <h2>إدارة وتوليد تراخيص العمل الفورية</h2>
+            <p>اختر نوع التفعيل المناسب للزبون سواء تفعيل جهاز أوفلاين مشفر أو رفع كود هدية أونلاين للسيرفر.</p>
+        </div>
+
+        <div class="input-group">
+            <label>نوع التفعيل الأساسي:</label>
+            <select id="mode" onchange="toggleCodeMode()">
+                <option value="device">تفعيل جهاز محدد (أوفلاين)</option>
+                <option value="gift">كود هدية (أونلاين السيرفر)</option>
+            </select>
+        </div>
+
+        <div id="deviceSubSection">
+            <div class="input-group">
+                <label>كود الجهاز الفريد (5 خانات من الزبون):</label>
+                <input type="text" id="devId" class="en-field" maxlength="5" placeholder="مثال: X7R2B">
+            </div>
+            <div class="input-group">
+                <label>مدة صلاحية الاشتراك للمنظومة:</label>
+                <select id="devType">
+                    <option value="M3">3 أشهر</option>
+                    <option value="M8">8 أشهر</option>
+                    <option value="Y1">سنة كاملة</option>
+                    <option value="LIFE">اشتراك دائم (مدى الحياة)</option>
+                </select>
+            </div>
+            <button class="action-btn" onclick="createDeviceCode()">توليد كود التفعيل الفوري 🔑</button>
+        </div>
+
+        <div id="giftSubSection" style="display:none;">
+            <div class="input-group">
+                <label>عدد أيام صلاحية الهدية المفتوحة:</label>
+                <input type="number" id="giftDays" value="7">
+            </div>
+            <button class="action-btn" onclick="createGiftCode()">رفع كود الهدية المباشر للسيرفر 🚀</button>
+        </div>
+    </div>
+
+    <div id="resBox" class="result-box">
+        <span id="resMsg" style="font-size: 13.5px; color: var(--text-muted); display: block; margin-bottom: 10px; text-align: right; font-weight: 600;"></span>
+        <span id="resCode" class="code-display"></span>
+        <button id="mainActionBtn" class="copy-btn" onclick="copyCode()">نسخ الناتج الحالي 📋</button>
+    </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+
+<script>
+    const firebaseConfig = { databaseURL: "https://mobifix-activation-default-rtdb.firebaseio.com/" };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const SALT = "MOBIFIX_2026_SECURE";
+
+    window.onload = function() {
+        renderVault();
+        if (localStorage.getItem('mobifix_last_generated_email')) {
+            document.getElementById('generatedEmail').value = localStorage.getItem('mobifix_last_generated_email');
+            document.getElementById('generatedPass').value = localStorage.getItem('mobifix_last_generated_pass');
+        }
+        silentSyncFromFirebase();
+    };
+
+    function switchPage(page) {
+        document.getElementById('resBox').style.display = 'none';
+        if (page === 'cloud') {
+            document.getElementById('pageCloud').style.display = 'block';
+            document.getElementById('pageCodes').style.display = 'none';
+            document.getElementById('btnTabCloud').classList.add('active');
+            document.getElementById('btnTabCodes').classList.remove('active');
+        } else {
+            document.getElementById('pageCloud').style.display = 'none';
+            document.getElementById('pageCodes').style.display = 'block';
+            document.getElementById('btnTabCloud').classList.remove('active');
+            document.getElementById('btnTabCodes').classList.add('active');
+        }
+    }
+
+    function toggleCodeMode() {
+        const mode = document.getElementById('mode').value;
+        document.getElementById('deviceSubSection').style.display = mode === 'device' ? 'block' : 'none';
+        document.getElementById('giftSubSection').style.display = mode === 'gift' ? 'block' : 'none';
+        document.getElementById('resBox').style.display = 'none';
+    }
+
+    function generateSecurePassword() {
+        const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$";
+        let pass = "";
+        for (let i = 0; i < 12; i++) {
+            pass += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return pass + "Mf26"; 
+    }
+
+    function generateNextEmail() {
+        let baseEmail = document.getElementById('adminEmail').value.trim();
+        if(!baseEmail) return alert("الرجاء إدخال بداية بريد Gmail أولاً!");
+        
+        if(!baseEmail.includes('@')) {
+            baseEmail = baseEmail + "@gmail.com";
+        }
+        
+        let currentCounter = parseInt(localStorage.getItem('mobifix_email_counter')) || 1;
+        const parts = baseEmail.split('@');
+        
+        let finalEmail = "";
+        let vault = JSON.parse(localStorage.getItem('mobifix_vault')) || [];
+        
+        while(true) {
+            const paddedCounter = String(currentCounter).padStart(2, '0');
+            finalEmail = `${parts[0]}+mobi${paddedCounter}@${parts[1]}`;
+            
+            if (!vault.some(item => item.email === finalEmail)) {
+                break;
+            }
+            currentCounter++; 
+        }
+        
+        document.getElementById('generatedEmail').value = finalEmail;
+        const generatedPassword = generateSecurePassword();
+        document.getElementById('generatedPass').value = generatedPassword;
+        
+        localStorage.setItem('mobifix_last_generated_email', finalEmail);
+        localStorage.setItem('mobifix_last_generated_pass', generatedPassword);
+        
+        localStorage.setItem('mobifix_email_counter', currentCounter);
+        document.getElementById('emailBtn').innerText = "تغيير 🔄";
+    }
+
+    function copyEmailAndOpenSupabase() {
+        const email = document.getElementById('generatedEmail').value;
+        const pass = document.getElementById('generatedPass').value;
+        
+        if(!email || !pass) { 
+            alert("الرجاء الضغط على زر توليد الإيميل أولاً!");
+            return;
+        }
+        
+        let vault = JSON.parse(localStorage.getItem('mobifix_vault')) || [];
+        if (!vault.some(item => item.email === email)) {
+            vault.push({
+                email: email,
+                password: pass,
+                date: new Date().toLocaleDateString('ar-LY')
+            });
+            localStorage.setItem('mobifix_vault', JSON.stringify(vault));
+            renderVault(); 
+            db.ref('mobifix_vault_backup').set(vault);
+        }
+        
+        let nextCount = parseInt(localStorage.getItem('mobifix_email_counter')) || 1;
+        localStorage.setItem('mobifix_email_counter', nextCount + 1);
+
+        const copyText = `${email} ${pass}`;
+        navigator.clipboard.writeText(copyText).then(() => {
+            alert("✅ تم نسخ النص بالصيغة الذكية: (الإيميل مسافة الرمز)\nيمكنك الآن لصقه وقص الرمز منه بسهولة.\nسيتم توجيهك الآن لصفحة التسجيل في سوبابيز.");
+            window.open('https://supabase.com/dashboard/sign-up', '_blank');
+        });
+    }
+
+    function renderVault() {
+        const vault = JSON.parse(localStorage.getItem('mobifix_vault')) || [];
+        const container = document.getElementById('vaultContent');
+        
+        if (vault.length === 0) {
+            container.innerHTML = `<div class="vault-empty">الخزنة فارغة محلياً. استخدم زر المزامنة لجلب بياناتك المخزنة سحابياً في أي وقت.</div>`;
+            return;
+        }
+        
+        let html = `<table class="vault-table">
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Password</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>`;
+            
+        vault.forEach((item, index) => {
+            html += `<tr>
+                <td>${item.email}</td>
+                <td>${item.password}</td>
+                <td>
+                    <button class="btn-copy-mini" onclick="copyMini('${item.email}')">إيميل</button>
+                    <button class="btn-copy-mini" onclick="copyMini('${item.password}')">رمز</button>
+                </td>
+            </tr>`;
+        });
+        
+        html += `</tbody></table>`;
+        container.innerHTML = html;
+    }
+
+    function copyMini(text) {
+        navigator.clipboard.writeText(text);
+        alert("تم نسخ النص الفرعي المختار!");
+    }
+
+    function syncVaultFromFirebase() {
+        db.ref('mobifix_vault_backup').once('value').then((snapshot) => {
+            const remoteVault = snapshot.val();
+            if(remoteVault && Array.isArray(remoteVault)) {
+                localStorage.setItem('mobifix_vault', JSON.stringify(remoteVault));
+                renderVault();
+                alert("🔄 تم بنجاح مزامنة واسترجاع كل الحسابات والرموز المحفوظة من السيرفر السحابي لمتصفحك الحالي!");
+            } else {
+                alert("لا توجد بيانات محفوظة سحابياً بعد، قم بحفظ الحسابات أولاً.");
+            }
+        }).catch(e => alert("خطأ في المزامنة: " + e.message));
+    }
+
+    function silentSyncFromFirebase() {
+        db.ref('mobifix_vault_backup').once('value').then((snapshot) => {
+            const remoteVault = snapshot.val();
+            if(remoteVault && Array.isArray(remoteVault)) {
+                let localVault = JSON.parse(localStorage.getItem('mobifix_vault')) || [];
+                if(remoteVault.length > localVault.length) {
+                    localStorage.setItem('mobifix_vault', JSON.stringify(remoteVault));
+                    renderVault();
+                }
+            }
+        }).catch(e => console.log("Silent sync bypass: ", e));
+    }
+
+    function clearVault() {
+        if (confirm("هل أنت متأكد من رغبتك في تصفير تاريخ الخزنة بالكامل محلياً وسحابياً؟")) {
+            localStorage.removeItem('mobifix_vault');
+            localStorage.removeItem('mobifix_last_generated_email');
+            localStorage.removeItem('mobifix_last_generated_pass');
+            localStorage.setItem('mobifix_email_counter', 1);
+            document.getElementById('generatedEmail').value = "";
+            document.getElementById('generatedPass').value = "";
+            db.ref('mobifix_vault_backup').remove();
+            renderVault();
+            alert("تم تصفير وتطهير الخزنة من جميع المتصفحات بنجاح!");
+        }
+    }
+
+    function fastCloudSetup() {
+        const center = document.getElementById('centerName').value.trim();
+        let url = document.getElementById('subUrl').value.trim();
+        const key = document.getElementById('subKey').value.trim();
+        const accessCode = document.getElementById('subAccessCode').value.trim();
+        const versionStr = document.getElementById('subVersion').value.trim();
+
+        if(!center || !url || !key || !accessCode || !versionStr) return alert("الرجاء تعبئة جميع الحقول لتوليد ملف الـ JSON بنجاح!");
+        if(url.endsWith('/')) url = url.slice(0, -1);
+
+        const now = new Date();
+        const syncId = `${center}_${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}_${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}`;
+
+        const sqlScript = `-- =============================================\n-- Mobifix PRO — إعداد قاعدة البيانات السحابية\n-- انسخ هذا الكود كاملاً والصقه في SQL Editor\n-- =============================================\n\n-- 1. إنشاء جدول المزامنة الرئيسي\nCREATE TABLE IF NOT EXISTS sync_data (\n  center_name  TEXT PRIMARY KEY,\n  devices      JSONB NOT NULL DEFAULT '[]',\n  employees    JSONB NOT NULL DEFAULT '[]',\n  attendance   JSONB NOT NULL DEFAULT '[]',\n  expenses     JSONB NOT NULL DEFAULT '[]',\n  settings     JSONB NOT NULL DEFAULT '{}',\n  last_updated BIGINT NOT NULL DEFAULT 0,\n  metadata     JSONB DEFAULT '{}'\n);\n\n-- 2. تفعيل نظام الأمان (Row Level Security)\nALTER TABLE sync_data ENABLE ROW LEVEL SECURITY;\n\n-- 3. السماح بالوصول العام للمنظومة\nDROP POLICY IF EXISTS "mobifix_public_access" ON sync_data;\nCREATE POLICY "mobifix_public_access"\n  ON sync_data\n  FOR ALL\n  USING (true)\n  WITH CHECK (true);\n\n-- 4. إنشاء دالة التنشيط التلقائي (تمنع توقف السحابة)\nCREATE EXTENSION IF NOT EXISTS pg_cron;\n\nCREATE OR REPLACE FUNCTION mobifix_keepalive()\nRETURNS void\nLANGUAGE plpgsql AS $$\nDECLARE\n  v_last_sync    BIGINT;\n  v_now_ms       BIGINT;\n  v_five_days_ms BIGINT := 432000000;\nBEGIN\n  v_now_ms := (extract(epoch FROM now()) * 1000)::bigint;\n  \n  SELECT COALESCE(MAX(last_updated), 0)\n  INTO v_last_sync\n  FROM sync_data\n  WHERE center_name != 'MOBIFIX_HEARTBEAT';\n\n  -- لو مر 5 أيام بدون أي نشاط → نكتب سجل heartbeat\n  IF (v_now_ms - v_last_sync) > v_five_days_ms THEN\n    INSERT INTO sync_data (center_name, last_updated, metadata)\n    VALUES (\n      'MOBIFIX_HEARTBEAT',\n      v_now_ms,\n      jsonb_build_object(\n        'source', 'auto_keepalive',\n        'reason', '5_days_no_activity',\n        'triggered_at', to_char(now(), 'YYYY-MM-DD HH24:MI:SS')\n      )\n    )\n    ON CONFLICT (center_name) DO UPDATE SET\n      last_updated = EXCLUDED.last_updated,\n      metadata     = EXCLUDED.metadata;\n  END IF;\nEND;\n$$;\n\n-- 5. جدولة التنشيط يومياً الساعة 12 ظهراً\nSELECT cron.unschedule(jobid) FROM cron.job WHERE jobname = 'mobifix-keepalive';\nSELECT cron.schedule(\n  'mobifix-keepalive',\n  '0 12 * * *',\n  $$SELECT mobifix_keepalive()$$\n);\n\n-- ✅ اكتمل الإعداد بنجاح`;
+
+        navigator.clipboard.writeText(sqlScript).then(() => {
+            const configData = {
+                "cloudUrl": url,
+                "cloudApiKey": key,
+                "cloudSyncId": syncId,
+                "cloudAccessCode": accessCode,
+                "centerName": center,
+                "generatedAt": now.toLocaleString('ar-LY', { hour12: true }),
+                "version": versionStr
+            };
+
+            const blob = new Blob([JSON.stringify(configData, null, 2)], { type: "application/json" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `Mobifix_${center}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            try {
+                const projectId = url.split('://')[1].split('.')[0];
+                alert("🚀 تم تحميل ملف التفعيل بنجاح باسم: Mobifix_" + center + ".json\n\nوتم نسخ كود الـ SQL المعتمد للحافظة بنجاح!\nسيفتح لك الآن الـ SQL Editor لعمل لصق و Run الأخضر ✅");
+                window.open(`https://supabase.com/dashboard/project/${projectId}/sql/new`, '_blank');
+            } catch(e) {
+                window.open('https://supabase.com/dashboard', '_blank');
+            }
+
+            showResult("كود تهيئة السيرفر المعتمد (تم نسخه بالكامل للحافظة ومحتواه):", sqlScript);
+        });
+    }
+
+    function createDeviceCode() {
+        const id = document.getElementById('devId').value.trim().toUpperCase();
+        const type = document.getElementById('devType').value;
+        if(id.length !== 5) return alert("الرجاء إدخال 5 خانات لكود الجهاز بشكل صحيح");
+        const finalCode = type + "-" + CryptoJS.MD5(type + id + SALT).toString().toUpperCase().substring(0, 6);
+        
+        showResult("كود التفعيل الفوري (يعمل لهذا الجهاز المحدد فقط):", finalCode);
+    }
+
+    function createGiftCode() {
+        const days = document.getElementById('giftDays').value;
+        if(!days) return alert("الرجاء تحديد عدد الأيام");
+        const giftCode = "GIFT-" + Math.random().toString(36).substring(2,7).toUpperCase();
+        
+        db.ref('active_gifts/' + giftCode).set({ days: parseInt(days), status: "unused" }).then(() => {
+            showResult("كود الهدية أونلاين تم بثه ورفعه للسيرفر بنجاح:", giftCode);
+        }).catch(e => alert("خطأ في الاتصال بقاعدة البيانات: " + e.message));
+    }
+
+    function showResult(msg, code) {
+        document.getElementById('resMsg').innerText = msg;
+        document.getElementById('resCode').innerText = code;
+        document.getElementById('resBox').style.display = 'block';
+    }
+
+    function copyCode() {
+        const codeText = document.getElementById('resCode').innerText;
+        navigator.clipboard.writeText(codeText).then(() => {
+            if(codeText.startsWith("GIFT-") || codeText.includes("-")) {
+                alert("✅ تم نسخ كود التفعيل بنجاح لإرساله للزبون!");
+            } else {
+                alert("✅ تم نسخ كود الـ SQL بنجاح للحافظة!");
+            }
+        });
+    }
+</script>
+</body>
+</html>
